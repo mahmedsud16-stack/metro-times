@@ -9,7 +9,26 @@ body {
 #app { max-width: 600px; margin: 0 auto; padding: 16px; }
 h1 { font-size: 1.6rem; margin: 0; line-height: 1.2; }
 h2 { font-size: 1.05rem; margin: 0 0 10px; letter-spacing: .01em; }
-h3 { font-size: .95rem; margin: 18px 0 8px; color: #3d4f47; }
+h3 { font-size: .95rem; margin: 14px 0 6px; color: #3d4f47; }
+
+/* Six-line color bar under the header */
+.linebar { display: flex; height: 6px; border-radius: 999px; overflow: hidden; margin: 0 0 16px; }
+.linebar span { flex: 1; }
+
+/* Line sections: one colored header per line, stations in route order */
+.line-section { margin-top: 2px; }
+.line-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 1rem;
+  margin: 14px 0 2px;
+}
+.line-section:first-child .line-head { margin-top: 8px; }
+.line-head-count { font-weight: 400; font-size: .85rem; opacity: .92; white-space: nowrap; }
 
 /* Header: dark green bar */
 header {
@@ -31,7 +50,7 @@ button.linklike.light { color: #cfe6d8; }
 .card {
   background: #fff;
   border-radius: 16px;
-  padding: 20px;
+  padding: 16px;
   margin-bottom: 16px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
 }
@@ -96,29 +115,33 @@ input[type=search]:focus, input[type=password]:focus {
 .fav-chip { border-color: #0b3d2e; color: #0b3d2e; font-weight: 600; }
 .fav-chip .star-glyph { color: #b9a100; }
 
-/* Station list */
+/* Station list: strict grid — name | dots | code | distance | star | anchor.
+   Every row lines up in the same columns, no matter the content. */
 ul.stations, ul.trains { list-style: none; margin: 0; padding: 0; }
 ul.stations li {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto auto auto;
   align-items: center;
   gap: 8px;
-  padding: 12px 2px;
+  padding: 10px 4px;
   border-bottom: 1px solid #e6e2d8;
   cursor: pointer;
 }
 ul.stations li.selected { background: #eef6f1; }
-.st-name { flex: 1; font-weight: 600; }
+.st-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .st-code { color: #5b6b64; font-size: .85rem; }
 .st-dist { color: #5b6b64; font-size: .85rem; white-space: nowrap; }
+.st-dist:empty { display: none; }
 .star { background: none; border: none; font-size: 1.3rem; padding: 2px 6px; color: #b9a100; }
 .star.off { color: #c8cfcb; }
 .anchor-btn {
   background: none;
   border: 1px solid #9aa8a2;
   border-radius: 999px;
-  padding: 4px 10px;
-  font-size: .8rem;
+  padding: 4px 8px;
+  font-size: .78rem;
   color: #0b3d2e;
+  white-space: nowrap;
 }
 .anchor-btn.set { background: #0b3d2e; color: #fff; }
 
@@ -137,18 +160,20 @@ ul.stations li.selected { background: #eef6f1; }
   white-space: nowrap;
 }
 
-/* Board */
+/* Board: strict grid — line pill | destination | time, all aligned. */
 .board-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .board-head h2 { font-size: 1.35rem; margin: 0; }
 ul.trains li {
-  display: flex;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
-  padding: 14px 2px;
+  padding: 12px 4px;
   border-bottom: 1px solid #e6e2d8;
 }
 ul.trains li:last-child { border-bottom: none; }
-.tr-dest { flex: 1; font-size: 1.08rem; font-weight: 600; }
-.tr-min { font-weight: 700; font-size: 1.35rem; white-space: nowrap; color: #0b3d2e; }
+ul.trains li .pill { text-align: center; }
+.tr-dest { font-size: 1.08rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tr-min { font-weight: 700; font-size: 1.35rem; white-space: nowrap; color: #0b3d2e; text-align: right; }
 
 footer { text-align: center; padding: 8px; }

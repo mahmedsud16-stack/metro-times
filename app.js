@@ -22,6 +22,21 @@ var LINES = {
   YL: { name: 'Yellow', color: '#FFD100' },
   GR: { name: 'Green', color: '#00B140' }
 };
+// Route order per line, terminus to terminus, by station primary code.
+// Verified against line geography: Red Shady Grove <-> Glenmont, Orange
+// Vienna <-> New Carrollton, Silver Ashburn <-> Downtown Largo, Blue
+// Franconia-Springfield <-> Downtown Largo, Yellow Huntington <-> Greenbelt,
+// Green Branch Ave <-> Greenbelt. (B35 NoMa sits between Union Station and
+// Rhode Island Ave; N05 does not exist on Silver.)
+var LINE_ORDER = {
+  RD: ['A15','A14','A13','A12','A11','A10','A09','A08','A07','A06','A05','A04','A03','A02','A01','B01','B02','B03','B35','B04','B05','B06','B07','B08','B09','B10','B11'],
+  OR: ['K08','K07','K06','K05','K04','K03','K02','K01','C05','C04','C03','C02','A01','D01','D02','D03','D04','D05','D06','D07','D08','D09','D10','D11','D12','D13'],
+  SV: ['N12','N11','N10','N09','N08','N07','N06','N04','N03','N02','N01','K05','K04','K03','K02','K01','C05','C04','C03','C02','A01','D01','D02','D03','D04','D05','D06','D07','D08','G01','G02','G03','G04','G05'],
+  BL: ['J03','J02','C13','C12','C11','C10','C09','C08','C07','C06','C05','C04','C03','C02','A01','D01','D02','D03','D04','D05','D06','D07','D08','G01','G02','G03','G04','G05'],
+  YL: ['C15','C14','C13','C12','C11','C10','C09','C08','C07','D03','F02','B01','E01','E02','E03','E04','E05','B06','E07','E08','E09','E10'],
+  GR: ['F11','F10','F09','F08','F07','F06','F05','F04','D03','F02','B01','E01','E02','E03','E04','E05','B06','E07','E08','E09','E10']
+};
+var LINE_SECTION_ORDER = ['RD', 'OR', 'SV', 'BL', 'YL', 'GR'];
 // Light line colors need dark text on the pill for contrast.
 function pillTextColor(hex) { return (hex === '#FFD100' || hex === '#A2AAAD') ? '#1c2b26' : '#fff'; }
 
@@ -282,10 +297,7 @@ function stationMatches(st) {
 function stationRow(st) {
   var isFav = favorites.indexOf(st.code) !== -1;
   var isSel = selectedCode && st.codes.indexOf(selectedCode) !== -1;
-  var dist = '';
-  if (userLoc) {
-    dist = '<span class="st-dist">' + haversineKm(userLoc.lat, userLoc.lon, st.lat, st.lon).toFixed(1) + ' km</span>';
-  }
+  var dist = '<span class="st-dist">' + (userLoc ? haversineKm(userLoc.lat, userLoc.lon, st.lat, st.lon).toFixed(1) + ' km' : '') + '</span>';
   var isAnchor = anchorCode && st.codes.indexOf(anchorCode) !== -1;
   return '<li data-code="' + esc(st.code) + '" class="' + (isSel ? 'selected' : '') + '">' +
     '<span class="st-name">' + esc(st.name) + '</span>' +
@@ -295,6 +307,14 @@ function stationRow(st) {
     '<button class="anchor-btn ' + (isAnchor ? 'set' : '') + '" data-anchor="' + esc(st.code) + '" title="Save as my saved location">' + (isAnchor ? 'Saved ✓' : 'Save location') + '</button>' +
     '</li>';
 }
+function lineStationsInOrder(line) {
+  // That line's stations in route order (LINE_ORDER), looked up by primary
+  // code. A transfer station appears in every line it serves.
+  var byPrimary = {};
+  stations.forEach(function (s) { byPrimary[s.code] = s; });
+  return LINE_ORDER[line].map(function (code) { return byPrimary[code]; })
+    .filter(function (s) { return s && s.lines.indexOf(line) !== -1; });
+}
 function renderStations() {
   var favStations = favorites.map(primaryStation).filter(Boolean);
   $('favList').innerHTML = favStations.length
@@ -302,22 +322,46 @@ function renderStations() {
         return '<button class="chip fav-chip" data-code="' + esc(st.code) + '"><span class="star-glyph">★</span> ' + esc(st.name) + '</button>';
       }).join('')
     : '<p class="muted">No favorite stations yet — tap ★ next to any station.</p>';
-  var list = stations.filter(stationMatches);
-  if (userLoc) {
-    list = list.slice().sort(function (a, b) {
-      return haversineKm(userLoc.lat, userLoc.lon, a.lat, a.lon) - haversineKm(userLoc.lat, userLoc.lon, b.lat, b.lon);
-    });
+  var container = $('stationList');
+  if (searchText) {
+    // Search results stay a flat list (grouping does not apply to search).
+    var list = stations.filter(stationMatches);
+    if (userLoc) {
+      list = list.slice().sort(function (a, b) {
+        return haversineKm(userLoc.lat, userLoc.lon, a.lat, a.lon) - haversineKm(userLoc.lat, userLoc.lon, b.lat, b.lon);
+      });
+    }
+    container.innerHTML = list.length ? '<ul class="stations">' + list.map(stationRow).join('') + '</ul>' : '<p class="muted">No matching stations.</p>';
+    $('stationCount').textContent = '(' + list.length + ' of ' + stations.length + ')';
+    return;
   }
-  $('stationList').innerHTML = list.length ? list.map(stationRow).join('') : '<li class="muted">No matching stations.</li>';
-  $('stationCount').textContent = '(' + list.length + ' of ' + stations.length + ')';
+  // Grouped by line, one section per line in route order. The line filter
+  // shows only that line's section; "All" shows all six. Route order wins
+  // over distance sorting here — distances are still shown on each row.
+  var lines = lineFilter === 'ALL' ? LINE_SECTION_ORDER : [lineFilter];
+  container.innerHTML = lines.map(function (line) {
+    var L = LINES[line];
+    var rows = lineStationsInOrder(line);
+    return '<div class="line-section">' +
+      '<h4 class="line-head" style="background:' + L.color + ';color:' + pillTextColor(L.color) + '">' +
+      '<span>' + esc(L.name) + ' Line</span><span class="line-head-count">' + rows.length + ' stations</span></h4>' +
+      '<ul class="stations">' + rows.map(stationRow).join('') + '</ul></div>';
+  }).join('');
+  var shown = lineFilter === 'ALL' ? stations.length : lineStationsInOrder(lineFilter).length;
+  $('stationCount').textContent = '(' + shown + ' stations)';
 }
 function renderLineFilter() {
   var chips = [{ code: 'ALL', name: 'All' }].concat(Object.keys(LINES).map(function (c) {
     return { code: c, name: LINES[c].name, color: LINES[c].color };
   }));
   $('lineFilter').innerHTML = chips.map(function (ch) {
-    var dot = ch.color ? '<span class="dot" style="background:' + ch.color + '"></span> ' : '';
-    return '<button class="chip' + (lineFilter === ch.code ? ' active' : '') + '" data-line="' + ch.code + '">' + dot + esc(ch.name) + '</button>';
+    var active = lineFilter === ch.code;
+    // The active chip wears its line color (the chip itself is the color,
+    // so no separate dot); "All" stays dark green.
+    var dot = (!active && ch.color) ? '<span class="dot" style="background:' + ch.color + '"></span> ' : '';
+    var style = '';
+    if (active && ch.color) style = ' style="background:' + ch.color + ';border-color:' + ch.color + ';color:' + pillTextColor(ch.color) + '"';
+    return '<button class="chip' + (active ? ' active' : '') + '" data-line="' + ch.code + '"' + style + '>' + dot + esc(ch.name) + '</button>';
   }).join('');
 }
 function renderAnchorLine() {

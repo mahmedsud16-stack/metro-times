@@ -1,1238 +1,1242 @@
 [
- {
-  "code": "A01",
-  "codes": [
-   "A01",
-   "C01"
-  ],
-  "name": "Metro Center",
-  "lines": [
-   "BL",
-   "OR",
-   "RD",
-   "SV"
-  ],
-  "lat": 38.89807,
-  "lon": -77.02831
- },
- {
-  "code": "A02",
-  "codes": [
-   "A02"
-  ],
-  "name": "Farragut North",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.9033,
-  "lon": -77.03973
- },
- {
-  "code": "A03",
-  "codes": [
-   "A03"
-  ],
-  "name": "Dupont Circle",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.90975,
-  "lon": -77.04356
- },
- {
-  "code": "A04",
-  "codes": [
-   "A04"
-  ],
-  "name": "Woodley Park",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.92502,
-  "lon": -77.05236
- },
- {
-  "code": "A05",
-  "codes": [
-   "A05"
-  ],
-  "name": "Cleveland Park",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.93552,
-  "lon": -77.05844
- },
- {
-  "code": "A06",
-  "codes": [
-   "A06"
-  ],
-  "name": "Van Ness-UDC",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.94417,
-  "lon": -77.06348
- },
- {
-  "code": "A07",
-  "codes": [
-   "A07"
-  ],
-  "name": "Tenleytown-AU",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.94807,
-  "lon": -77.0793
- },
- {
-  "code": "A08",
-  "codes": [
-   "A08"
-  ],
-  "name": "Friendship Heights",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.95948,
-  "lon": -77.085
- },
- {
-  "code": "A09",
-  "codes": [
-   "A09"
-  ],
-  "name": "Bethesda",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.98438,
-  "lon": -77.09417
- },
- {
-  "code": "A10",
-  "codes": [
-   "A10"
-  ],
-  "name": "Medical Center",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.99885,
-  "lon": -77.09684
- },
- {
-  "code": "A11",
-  "codes": [
-   "A11"
-  ],
-  "name": "Grosvenor-Strathmore",
-  "lines": [
-   "RD"
-  ],
-  "lat": 39.02908,
-  "lon": -77.10381
- },
- {
-  "code": "A12",
-  "codes": [
-   "A12"
-  ],
-  "name": "North Bethesda",
-  "lines": [
-   "RD"
-  ],
-  "lat": 39.04815,
-  "lon": -77.11283
- },
- {
-  "code": "A13",
-  "codes": [
-   "A13"
-  ],
-  "name": "Twinbrook",
-  "lines": [
-   "RD"
-  ],
-  "lat": 39.06268,
-  "lon": -77.12121
- },
- {
-  "code": "A14",
-  "codes": [
-   "A14"
-  ],
-  "name": "Rockville",
-  "lines": [
-   "RD"
-  ],
-  "lat": 39.08415,
-  "lon": -77.14606
- },
- {
-  "code": "A15",
-  "codes": [
-   "A15"
-  ],
-  "name": "Shady Grove",
-  "lines": [
-   "RD"
-  ],
-  "lat": 39.11991,
-  "lon": -77.16466
- },
- {
-  "code": "B01",
-  "codes": [
-   "B01",
-   "F01"
-  ],
-  "name": "Gallery Place",
-  "lines": [
-   "GR",
-   "RD",
-   "YL"
-  ],
-  "lat": 38.89856,
-  "lon": -77.02224
- },
- {
-  "code": "B02",
-  "codes": [
-   "B02"
-  ],
-  "name": "Judiciary Square",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.89609,
-  "lon": -77.01668
- },
- {
-  "code": "B03",
-  "codes": [
-   "B03"
-  ],
-  "name": "Union Station",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.89777,
-  "lon": -77.00741
- },
- {
-  "code": "B04",
-  "codes": [
-   "B04"
-  ],
-  "name": "Rhode Island Ave",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.92082,
-  "lon": -76.99597
- },
- {
-  "code": "B05",
-  "codes": [
-   "B05"
-  ],
-  "name": "Brookland-CUA",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.93321,
-  "lon": -76.99453
- },
- {
-  "code": "B06",
-  "codes": [
-   "B06",
-   "E06"
-  ],
-  "name": "Fort Totten",
-  "lines": [
-   "GR",
-   "RD",
-   "YL"
-  ],
-  "lat": 38.95177,
-  "lon": -77.00242
- },
- {
-  "code": "B07",
-  "codes": [
-   "B07"
-  ],
-  "name": "Takoma",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.97563,
-  "lon": -77.0179
- },
- {
-  "code": "B08",
-  "codes": [
-   "B08"
-  ],
-  "name": "Silver Spring",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.99384,
-  "lon": -77.03133
- },
- {
-  "code": "B09",
-  "codes": [
-   "B09"
-  ],
-  "name": "Forest Glen",
-  "lines": [
-   "RD"
-  ],
-  "lat": 39.01531,
-  "lon": -77.04302
- },
- {
-  "code": "B10",
-  "codes": [
-   "B10"
-  ],
-  "name": "Wheaton",
-  "lines": [
-   "RD"
-  ],
-  "lat": 39.03869,
-  "lon": -77.05074
- },
- {
-  "code": "B11",
-  "codes": [
-   "B11"
-  ],
-  "name": "Glenmont",
-  "lines": [
-   "RD"
-  ],
-  "lat": 39.06178,
-  "lon": -77.05356
- },
- {
-  "code": "B35",
-  "codes": [
-   "B35"
-  ],
-  "name": "NoMa-Gallaudet U",
-  "lines": [
-   "RD"
-  ],
-  "lat": 38.90703,
-  "lon": -77.00315
- },
- {
-  "code": "C02",
-  "codes": [
-   "C02"
-  ],
-  "name": "McPherson Square",
-  "lines": [
-   "BL",
-   "OR",
-   "SV"
-  ],
-  "lat": 38.90136,
-  "lon": -77.03201
- },
- {
-  "code": "C03",
-  "codes": [
-   "C03"
-  ],
-  "name": "Farragut West",
-  "lines": [
-   "BL",
-   "OR",
-   "SV"
-  ],
-  "lat": 38.90135,
-  "lon": -77.04045
- },
- {
-  "code": "C04",
-  "codes": [
-   "C04"
-  ],
-  "name": "Foggy Bottom-GWU",
-  "lines": [
-   "BL",
-   "OR",
-   "SV"
-  ],
-  "lat": 38.90087,
-  "lon": -77.05035
- },
- {
-  "code": "C05",
-  "codes": [
-   "C05"
-  ],
-  "name": "Rosslyn",
-  "lines": [
-   "BL",
-   "OR",
-   "SV"
-  ],
-  "lat": 38.89598,
-  "lon": -77.07091
- },
- {
-  "code": "C06",
-  "codes": [
-   "C06"
-  ],
-  "name": "Arlington Cemetery",
-  "lines": [
-   "BL"
-  ],
-  "lat": 38.88462,
-  "lon": -77.06309
- },
- {
-  "code": "C07",
-  "codes": [
-   "C07"
-  ],
-  "name": "Pentagon",
-  "lines": [
-   "BL",
-   "YL"
-  ],
-  "lat": 38.86913,
-  "lon": -77.05408
- },
- {
-  "code": "C08",
-  "codes": [
-   "C08"
-  ],
-  "name": "Pentagon City",
-  "lines": [
-   "BL",
-   "YL"
-  ],
-  "lat": 38.86304,
-  "lon": -77.05943
- },
- {
-  "code": "C09",
-  "codes": [
-   "C09"
-  ],
-  "name": "Crystal City",
-  "lines": [
-   "BL",
-   "YL"
-  ],
-  "lat": 38.8579,
-  "lon": -77.05029
- },
- {
-  "code": "C10",
-  "codes": [
-   "C10"
-  ],
-  "name": "Ronald Reagan Washington National Airport",
-  "lines": [
-   "BL",
-   "YL"
-  ],
-  "lat": 38.85342,
-  "lon": -77.04404
- },
- {
-  "code": "C11",
-  "codes": [
-   "C11"
-  ],
-  "name": "Potomac Yard",
-  "lines": [
-   "BL",
-   "YL"
-  ],
-  "lat": 38.83325,
-  "lon": -77.04643
- },
- {
-  "code": "C12",
-  "codes": [
-   "C12"
-  ],
-  "name": "Braddock Road",
-  "lines": [
-   "BL",
-   "YL"
-  ],
-  "lat": 38.81415,
-  "lon": -77.05367
- },
- {
-  "code": "C13",
-  "codes": [
-   "C13"
-  ],
-  "name": "King St-Old Town",
-  "lines": [
-   "BL",
-   "YL"
-  ],
-  "lat": 38.80653,
-  "lon": -77.06105
- },
- {
-  "code": "C14",
-  "codes": [
-   "C14"
-  ],
-  "name": "Eisenhower Avenue",
-  "lines": [
-   "YL"
-  ],
-  "lat": 38.80034,
-  "lon": -77.07113
- },
- {
-  "code": "C15",
-  "codes": [
-   "C15"
-  ],
-  "name": "Huntington",
-  "lines": [
-   "YL"
-  ],
-  "lat": 38.79383,
-  "lon": -77.07529
- },
- {
-  "code": "D01",
-  "codes": [
-   "D01"
-  ],
-  "name": "Federal Triangle",
-  "lines": [
-   "BL",
-   "OR",
-   "SV"
-  ],
-  "lat": 38.89346,
-  "lon": -77.02803
- },
- {
-  "code": "D02",
-  "codes": [
-   "D02"
-  ],
-  "name": "Smithsonian",
-  "lines": [
-   "BL",
-   "OR",
-   "SV"
-  ],
-  "lat": 38.88852,
-  "lon": -77.02856
- },
- {
-  "code": "D03",
-  "codes": [
-   "D03",
-   "F03"
-  ],
-  "name": "L'Enfant Plaza",
-  "lines": [
-   "BL",
-   "GR",
-   "OR",
-   "SV",
-   "YL"
-  ],
-  "lat": 38.88514,
-  "lon": -77.02224
- },
- {
-  "code": "D04",
-  "codes": [
-   "D04"
-  ],
-  "name": "Federal Center SW",
-  "lines": [
-   "BL",
-   "OR",
-   "SV"
-  ],
-  "lat": 38.88512,
-  "lon": -77.01508
- },
- {
-  "code": "D05",
-  "codes": [
-   "D05"
-  ],
-  "name": "Capitol South",
-  "lines": [
-   "BL",
-   "OR",
-   "SV"
-  ],
-  "lat": 38.88514,
-  "lon": -77.00607
- },
- {
-  "code": "D06",
-  "codes": [
-   "D06"
-  ],
-  "name": "Eastern Market",
-  "lines": [
-   "BL",
-   "OR",
-   "SV"
-  ],
-  "lat": 38.88425,
-  "lon": -76.99582
- },
- {
-  "code": "D07",
-  "codes": [
-   "D07"
-  ],
-  "name": "Potomac Ave",
-  "lines": [
-   "BL",
-   "OR",
-   "SV"
-  ],
-  "lat": 38.8813,
-  "lon": -76.9852
- },
- {
-  "code": "D08",
-  "codes": [
-   "D08"
-  ],
-  "name": "Stadium-Armory",
-  "lines": [
-   "BL",
-   "OR",
-   "SV"
-  ],
-  "lat": 38.88833,
-  "lon": -76.97709
- },
- {
-  "code": "D09",
-  "codes": [
-   "D09"
-  ],
-  "name": "Minnesota Ave",
-  "lines": [
-   "OR"
-  ],
-  "lat": 38.89916,
-  "lon": -76.94674
- },
- {
-  "code": "D10",
-  "codes": [
-   "D10"
-  ],
-  "name": "Deanwood",
-  "lines": [
-   "OR"
-  ],
-  "lat": 38.90807,
-  "lon": -76.93534
- },
- {
-  "code": "D11",
-  "codes": [
-   "D11"
-  ],
-  "name": "Cheverly",
-  "lines": [
-   "OR"
-  ],
-  "lat": 38.91663,
-  "lon": -76.91666
- },
- {
-  "code": "D12",
-  "codes": [
-   "D12"
-  ],
-  "name": "Landover",
-  "lines": [
-   "OR"
-  ],
-  "lat": 38.9335,
-  "lon": -76.89126
- },
- {
-  "code": "D13",
-  "codes": [
-   "D13"
-  ],
-  "name": "New Carrollton",
-  "lines": [
-   "OR"
-  ],
-  "lat": 38.94801,
-  "lon": -76.87188
- },
- {
-  "code": "E01",
-  "codes": [
-   "E01"
-  ],
-  "name": "Mount Vernon Square",
-  "lines": [
-   "GR",
-   "YL"
-  ],
-  "lat": 38.90553,
-  "lon": -77.02193
- },
- {
-  "code": "E02",
-  "codes": [
-   "E02"
-  ],
-  "name": "Shaw-Howard University",
-  "lines": [
-   "GR",
-   "YL"
-  ],
-  "lat": 38.91347,
-  "lon": -77.02192
- },
- {
-  "code": "E03",
-  "codes": [
-   "E03"
-  ],
-  "name": "U Street",
-  "lines": [
-   "GR",
-   "YL"
-  ],
-  "lat": 38.917,
-  "lon": -77.02739
- },
- {
-  "code": "E04",
-  "codes": [
-   "E04"
-  ],
-  "name": "Columbia Heights",
-  "lines": [
-   "GR",
-   "YL"
-  ],
-  "lat": 38.92868,
-  "lon": -77.03281
- },
- {
-  "code": "E05",
-  "codes": [
-   "E05"
-  ],
-  "name": "Georgia Ave-Petworth",
-  "lines": [
-   "GR",
-   "YL"
-  ],
-  "lat": 38.93694,
-  "lon": -77.02417
- },
- {
-  "code": "E07",
-  "codes": [
-   "E07"
-  ],
-  "name": "West Hyattsville",
-  "lines": [
-   "GR"
-  ],
-  "lat": 38.95523,
-  "lon": -76.96952
- },
- {
-  "code": "E08",
-  "codes": [
-   "E08"
-  ],
-  "name": "Hyattsville Crossing",
-  "lines": [
-   "GR"
-  ],
-  "lat": 38.96534,
-  "lon": -76.95668
- },
- {
-  "code": "E09",
-  "codes": [
-   "E09"
-  ],
-  "name": "College Park-U of Md",
-  "lines": [
-   "GR"
-  ],
-  "lat": 38.97846,
-  "lon": -76.92827
- },
- {
-  "code": "E10",
-  "codes": [
-   "E10"
-  ],
-  "name": "Greenbelt",
-  "lines": [
-   "GR"
-  ],
-  "lat": 39.01106,
-  "lon": -76.91122
- },
- {
-  "code": "F02",
-  "codes": [
-   "F02"
-  ],
-  "name": "Archives",
-  "lines": [
-   "GR",
-   "YL"
-  ],
-  "lat": 38.89368,
-  "lon": -77.02192
- },
- {
-  "code": "F04",
-  "codes": [
-   "F04"
-  ],
-  "name": "Waterfront",
-  "lines": [
-   "GR"
-  ],
-  "lat": 38.87644,
-  "lon": -77.01751
- },
- {
-  "code": "F05",
-  "codes": [
-   "F05"
-  ],
-  "name": "Navy Yard-Ballpark",
-  "lines": [
-   "GR"
-  ],
-  "lat": 38.87647,
-  "lon": -77.00592
- },
- {
-  "code": "F06",
-  "codes": [
-   "F06"
-  ],
-  "name": "Anacostia",
-  "lines": [
-   "GR"
-  ],
-  "lat": 38.86219,
-  "lon": -76.99533
- },
- {
-  "code": "F07",
-  "codes": [
-   "F07"
-  ],
-  "name": "Congress Heights",
-  "lines": [
-   "GR"
-  ],
-  "lat": 38.84513,
-  "lon": -76.98808
- },
- {
-  "code": "F08",
-  "codes": [
-   "F08"
-  ],
-  "name": "Southern Avenue",
-  "lines": [
-   "GR"
-  ],
-  "lat": 38.84139,
-  "lon": -76.97487
- },
- {
-  "code": "F09",
-  "codes": [
-   "F09"
-  ],
-  "name": "Naylor Road",
-  "lines": [
-   "GR"
-  ],
-  "lat": 38.85113,
-  "lon": -76.95668
- },
- {
-  "code": "F10",
-  "codes": [
-   "F10"
-  ],
-  "name": "Suitland",
-  "lines": [
-   "GR"
-  ],
-  "lat": 38.84448,
-  "lon": -76.93267
- },
- {
-  "code": "F11",
-  "codes": [
-   "F11"
-  ],
-  "name": "Branch Ave",
-  "lines": [
-   "GR"
-  ],
-  "lat": 38.82685,
-  "lon": -76.91208
- },
- {
-  "code": "G01",
-  "codes": [
-   "G01"
-  ],
-  "name": "Benning Road",
-  "lines": [
-   "BL",
-   "SV"
-  ],
-  "lat": 38.89045,
-  "lon": -76.93753
- },
- {
-  "code": "G02",
-  "codes": [
-   "G02"
-  ],
-  "name": "Capitol Heights",
-  "lines": [
-   "BL",
-   "SV"
-  ],
-  "lat": 38.88927,
-  "lon": -76.91316
- },
- {
-  "code": "G03",
-  "codes": [
-   "G03"
-  ],
-  "name": "Addison Road",
-  "lines": [
-   "BL",
-   "SV"
-  ],
-  "lat": 38.88672,
-  "lon": -76.89441
- },
- {
-  "code": "G04",
-  "codes": [
-   "G04"
-  ],
-  "name": "Morgan Boulevard",
-  "lines": [
-   "BL",
-   "SV"
-  ],
-  "lat": 38.89374,
-  "lon": -76.86834
- },
- {
-  "code": "G05",
-  "codes": [
-   "G05"
-  ],
-  "name": "Downtown Largo",
-  "lines": [
-   "BL",
-   "SV"
-  ],
-  "lat": 38.9004,
-  "lon": -76.84493
- },
- {
-  "code": "J02",
-  "codes": [
-   "J02"
-  ],
-  "name": "Van Dorn Street",
-  "lines": [
-   "BL"
-  ],
-  "lat": 38.79931,
-  "lon": -77.12911
- },
- {
-  "code": "J03",
-  "codes": [
-   "J03"
-  ],
-  "name": "Franconia-Springfield",
-  "lines": [
-   "BL"
-  ],
-  "lat": 38.76634,
-  "lon": -77.1684
- },
- {
-  "code": "K01",
-  "codes": [
-   "K01"
-  ],
-  "name": "Court House",
-  "lines": [
-   "OR",
-   "SV"
-  ],
-  "lat": 38.89077,
-  "lon": -77.08565
- },
- {
-  "code": "K02",
-  "codes": [
-   "K02"
-  ],
-  "name": "Clarendon",
-  "lines": [
-   "OR",
-   "SV"
-  ],
-  "lat": 38.88708,
-  "lon": -77.09525
- },
- {
-  "code": "K03",
-  "codes": [
-   "K03"
-  ],
-  "name": "Virginia Square-GMU",
-  "lines": [
-   "OR",
-   "SV"
-  ],
-  "lat": 38.88294,
-  "lon": -77.10331
- },
- {
-  "code": "K04",
-  "codes": [
-   "K04"
-  ],
-  "name": "Ballston-MU",
-  "lines": [
-   "OR",
-   "SV"
-  ],
-  "lat": 38.88201,
-  "lon": -77.11151
- },
- {
-  "code": "K05",
-  "codes": [
-   "K05"
-  ],
-  "name": "East Falls Church",
-  "lines": [
-   "OR",
-   "SV"
-  ],
-  "lat": 38.88598,
-  "lon": -77.15682
- },
- {
-  "code": "K06",
-  "codes": [
-   "K06"
-  ],
-  "name": "West Falls Church",
-  "lines": [
-   "OR"
-  ],
-  "lat": 38.90079,
-  "lon": -77.18897
- },
- {
-  "code": "K07",
-  "codes": [
-   "K07"
-  ],
-  "name": "Dunn Loring",
-  "lines": [
-   "OR"
-  ],
-  "lat": 38.88335,
-  "lon": -77.22812
- },
- {
-  "code": "K08",
-  "codes": [
-   "K08"
-  ],
-  "name": "Vienna/Fairfax-GMU",
-  "lines": [
-   "OR"
-  ],
-  "lat": 38.8776,
-  "lon": -77.27229
- },
- {
-  "code": "N01",
-  "codes": [
-   "N01"
-  ],
-  "name": "McLean",
-  "lines": [
-   "SV"
-  ],
-  "lat": 38.92453,
-  "lon": -77.2101
- },
- {
-  "code": "N02",
-  "codes": [
-   "N02"
-  ],
-  "name": "Tysons",
-  "lines": [
-   "SV"
-  ],
-  "lat": 38.9206,
-  "lon": -77.22232
- },
- {
-  "code": "N03",
-  "codes": [
-   "N03"
-  ],
-  "name": "Greensboro",
-  "lines": [
-   "SV"
-  ],
-  "lat": 38.92111,
-  "lon": -77.234
- },
- {
-  "code": "N04",
-  "codes": [
-   "N04"
-  ],
-  "name": "Spring Hill",
-  "lines": [
-   "SV"
-  ],
-  "lat": 38.92926,
-  "lon": -77.24193
- },
- {
-  "code": "N06",
-  "codes": [
-   "N06"
-  ],
-  "name": "Wiehle-Reston East",
-  "lines": [
-   "SV"
-  ],
-  "lat": 38.94775,
-  "lon": -77.34008
- },
- {
-  "code": "N07",
-  "codes": [
-   "N07"
-  ],
-  "name": "Reston Town Center",
-  "lines": [
-   "SV"
-  ],
-  "lat": 38.95282,
-  "lon": -77.36065
- },
- {
-  "code": "N08",
-  "codes": [
-   "N08"
-  ],
-  "name": "Herndon",
-  "lines": [
-   "SV"
-  ],
-  "lat": 38.95284,
-  "lon": -77.38526
- },
- {
-  "code": "N09",
-  "codes": [
-   "N09"
-  ],
-  "name": "Innovation Center",
-  "lines": [
-   "SV"
-  ],
-  "lat": 38.96102,
-  "lon": -77.41608
- },
- {
-  "code": "N10",
-  "codes": [
-   "N10"
-  ],
-  "name": "Dulles International Airport",
-  "lines": [
-   "SV"
-  ],
-  "lat": 38.95579,
-  "lon": -77.44832
- },
- {
-  "code": "N11",
-  "codes": [
-   "N11"
-  ],
-  "name": "Loudoun Gateway",
-  "lines": [
-   "SV"
-  ],
-  "lat": 38.99225,
-  "lon": -77.461
- },
- {
-  "code": "N12",
-  "codes": [
-   "N12"
-  ],
-  "name": "Ashburn",
-  "lines": [
-   "SV"
-  ],
-  "lat": 39.00497,
-  "lon": -77.4912
- }
+  {
+    "code": "A01",
+    "codes": [
+      "A01",
+      "C01"
+    ],
+    "name": "Metro Center",
+    "lines": [
+      "BL",
+      "OR",
+      "RD",
+      "SV"
+    ],
+    "lat": 38.89807,
+    "lon": -77.02831
+  },
+  {
+    "code": "A02",
+    "codes": [
+      "A02"
+    ],
+    "name": "Farragut North",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.9033,
+    "lon": -77.03973
+  },
+  {
+    "code": "A03",
+    "codes": [
+      "A03"
+    ],
+    "name": "Dupont Circle",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.90975,
+    "lon": -77.04356
+  },
+  {
+    "code": "A04",
+    "codes": [
+      "A04"
+    ],
+    "name": "Woodley Park",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.92502,
+    "lon": -77.05236
+  },
+  {
+    "code": "A05",
+    "codes": [
+      "A05"
+    ],
+    "name": "Cleveland Park",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.93552,
+    "lon": -77.05844
+  },
+  {
+    "code": "A06",
+    "codes": [
+      "A06"
+    ],
+    "name": "Van Ness-UDC",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.94417,
+    "lon": -77.06348
+  },
+  {
+    "code": "A07",
+    "codes": [
+      "A07"
+    ],
+    "name": "Tenleytown-AU",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.94807,
+    "lon": -77.0793
+  },
+  {
+    "code": "A08",
+    "codes": [
+      "A08"
+    ],
+    "name": "Friendship Heights",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.95948,
+    "lon": -77.085
+  },
+  {
+    "code": "A09",
+    "codes": [
+      "A09"
+    ],
+    "name": "Bethesda",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.98438,
+    "lon": -77.09417
+  },
+  {
+    "code": "A10",
+    "codes": [
+      "A10"
+    ],
+    "name": "Medical Center",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.99885,
+    "lon": -77.09684
+  },
+  {
+    "code": "A11",
+    "codes": [
+      "A11"
+    ],
+    "name": "Grosvenor-Strathmore",
+    "lines": [
+      "RD"
+    ],
+    "lat": 39.02908,
+    "lon": -77.10381
+  },
+  {
+    "code": "A12",
+    "codes": [
+      "A12"
+    ],
+    "name": "North Bethesda",
+    "lines": [
+      "RD"
+    ],
+    "lat": 39.04815,
+    "lon": -77.11283
+  },
+  {
+    "code": "A13",
+    "codes": [
+      "A13"
+    ],
+    "name": "Twinbrook",
+    "lines": [
+      "RD"
+    ],
+    "lat": 39.06268,
+    "lon": -77.12121
+  },
+  {
+    "code": "A14",
+    "codes": [
+      "A14"
+    ],
+    "name": "Rockville",
+    "lines": [
+      "RD"
+    ],
+    "lat": 39.08415,
+    "lon": -77.14606
+  },
+  {
+    "code": "A15",
+    "codes": [
+      "A15"
+    ],
+    "name": "Shady Grove",
+    "lines": [
+      "RD"
+    ],
+    "lat": 39.11991,
+    "lon": -77.16466
+  },
+  {
+    "code": "B01",
+    "codes": [
+      "B01",
+      "F01"
+    ],
+    "name": "Gallery Place",
+    "lines": [
+      "GR",
+      "RD",
+      "YL"
+    ],
+    "lat": 38.89856,
+    "lon": -77.02224
+  },
+  {
+    "code": "B02",
+    "codes": [
+      "B02"
+    ],
+    "name": "Judiciary Square",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.89609,
+    "lon": -77.01668
+  },
+  {
+    "code": "B03",
+    "codes": [
+      "B03"
+    ],
+    "name": "Union Station",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.89777,
+    "lon": -77.00741
+  },
+  {
+    "code": "B04",
+    "codes": [
+      "B04"
+    ],
+    "name": "Rhode Island Ave",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.92082,
+    "lon": -76.99597
+  },
+  {
+    "code": "B05",
+    "codes": [
+      "B05"
+    ],
+    "name": "Brookland-CUA",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.93321,
+    "lon": -76.99453
+  },
+  {
+    "code": "B06",
+    "codes": [
+      "B06",
+      "E06"
+    ],
+    "name": "Fort Totten",
+    "lines": [
+      "GR",
+      "RD",
+      "YL"
+    ],
+    "lat": 38.95177,
+    "lon": -77.00242
+  },
+  {
+    "code": "B07",
+    "codes": [
+      "B07"
+    ],
+    "name": "Takoma",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.97563,
+    "lon": -77.0179
+  },
+  {
+    "code": "B08",
+    "codes": [
+      "B08"
+    ],
+    "name": "Silver Spring",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.99384,
+    "lon": -77.03133
+  },
+  {
+    "code": "B09",
+    "codes": [
+      "B09"
+    ],
+    "name": "Forest Glen",
+    "lines": [
+      "RD"
+    ],
+    "lat": 39.01531,
+    "lon": -77.04302
+  },
+  {
+    "code": "B10",
+    "codes": [
+      "B10"
+    ],
+    "name": "Wheaton",
+    "lines": [
+      "RD"
+    ],
+    "lat": 39.03869,
+    "lon": -77.05074
+  },
+  {
+    "code": "B11",
+    "codes": [
+      "B11"
+    ],
+    "name": "Glenmont",
+    "lines": [
+      "RD"
+    ],
+    "lat": 39.06178,
+    "lon": -77.05356
+  },
+  {
+    "code": "B35",
+    "codes": [
+      "B35"
+    ],
+    "name": "NoMa-Gallaudet U",
+    "lines": [
+      "RD"
+    ],
+    "lat": 38.90703,
+    "lon": -77.00315
+  },
+  {
+    "code": "C02",
+    "codes": [
+      "C02"
+    ],
+    "name": "McPherson Square",
+    "lines": [
+      "BL",
+      "OR",
+      "SV"
+    ],
+    "lat": 38.90136,
+    "lon": -77.03201
+  },
+  {
+    "code": "C03",
+    "codes": [
+      "C03"
+    ],
+    "name": "Farragut West",
+    "lines": [
+      "BL",
+      "OR",
+      "SV"
+    ],
+    "lat": 38.90135,
+    "lon": -77.04045
+  },
+  {
+    "code": "C04",
+    "codes": [
+      "C04"
+    ],
+    "name": "Foggy Bottom-GWU",
+    "lines": [
+      "BL",
+      "OR",
+      "SV"
+    ],
+    "lat": 38.90087,
+    "lon": -77.05035
+  },
+  {
+    "code": "C05",
+    "codes": [
+      "C05"
+    ],
+    "name": "Rosslyn",
+    "lines": [
+      "BL",
+      "OR",
+      "SV"
+    ],
+    "lat": 38.89598,
+    "lon": -77.07091
+  },
+  {
+    "code": "C06",
+    "codes": [
+      "C06"
+    ],
+    "name": "Arlington Cemetery",
+    "lines": [
+      "BL"
+    ],
+    "lat": 38.88462,
+    "lon": -77.06309
+  },
+  {
+    "code": "C07",
+    "codes": [
+      "C07"
+    ],
+    "name": "Pentagon",
+    "lines": [
+      "BL",
+      "YL"
+    ],
+    "lat": 38.86913,
+    "lon": -77.05408
+  },
+  {
+    "code": "C08",
+    "codes": [
+      "C08"
+    ],
+    "name": "Pentagon City",
+    "lines": [
+      "BL",
+      "YL"
+    ],
+    "lat": 38.86304,
+    "lon": -77.05943
+  },
+  {
+    "code": "C09",
+    "codes": [
+      "C09"
+    ],
+    "name": "Crystal City",
+    "lines": [
+      "BL",
+      "YL"
+    ],
+    "lat": 38.8579,
+    "lon": -77.05029
+  },
+  {
+    "code": "C10",
+    "codes": [
+      "C10"
+    ],
+    "name": "Ronald Reagan Washington National Airport",
+    "lines": [
+      "BL",
+      "YL"
+    ],
+    "lat": 38.85342,
+    "lon": -77.04404
+  },
+  {
+    "code": "C11",
+    "codes": [
+      "C11"
+    ],
+    "name": "Potomac Yard",
+    "lines": [
+      "BL",
+      "YL"
+    ],
+    "lat": 38.83325,
+    "lon": -77.04643
+  },
+  {
+    "code": "C12",
+    "codes": [
+      "C12"
+    ],
+    "name": "Braddock Road",
+    "lines": [
+      "BL",
+      "YL"
+    ],
+    "lat": 38.81415,
+    "lon": -77.05367
+  },
+  {
+    "code": "C13",
+    "codes": [
+      "C13"
+    ],
+    "name": "King St-Old Town",
+    "lines": [
+      "BL",
+      "YL"
+    ],
+    "lat": 38.80653,
+    "lon": -77.06105
+  },
+  {
+    "code": "C14",
+    "codes": [
+      "C14"
+    ],
+    "name": "Eisenhower Avenue",
+    "lines": [
+      "YL"
+    ],
+    "lat": 38.80034,
+    "lon": -77.07113
+  },
+  {
+    "code": "C15",
+    "codes": [
+      "C15"
+    ],
+    "name": "Huntington",
+    "lines": [
+      "YL"
+    ],
+    "lat": 38.79383,
+    "lon": -77.07529
+  },
+  {
+    "code": "D01",
+    "codes": [
+      "D01"
+    ],
+    "name": "Federal Triangle",
+    "lines": [
+      "BL",
+      "OR",
+      "SV"
+    ],
+    "lat": 38.89346,
+    "lon": -77.02803
+  },
+  {
+    "code": "D02",
+    "codes": [
+      "D02"
+    ],
+    "name": "Smithsonian",
+    "lines": [
+      "BL",
+      "OR",
+      "SV"
+    ],
+    "lat": 38.88852,
+    "lon": -77.02856
+  },
+  {
+    "code": "D03",
+    "codes": [
+      "D03",
+      "F03"
+    ],
+    "name": "L'Enfant Plaza",
+    "lines": [
+      "BL",
+      "GR",
+      "OR",
+      "SV",
+      "YL"
+    ],
+    "lat": 38.88514,
+    "lon": -77.02224
+  },
+  {
+    "code": "D04",
+    "codes": [
+      "D04"
+    ],
+    "name": "Federal Center SW",
+    "lines": [
+      "BL",
+      "OR",
+      "SV"
+    ],
+    "lat": 38.88512,
+    "lon": -77.01508
+  },
+  {
+    "code": "D05",
+    "codes": [
+      "D05"
+    ],
+    "name": "Capitol South",
+    "lines": [
+      "BL",
+      "OR",
+      "SV"
+    ],
+    "lat": 38.88514,
+    "lon": -77.00607
+  },
+  {
+    "code": "D06",
+    "codes": [
+      "D06"
+    ],
+    "name": "Eastern Market",
+    "lines": [
+      "BL",
+      "OR",
+      "SV"
+    ],
+    "lat": 38.88425,
+    "lon": -76.99582
+  },
+  {
+    "code": "D07",
+    "codes": [
+      "D07"
+    ],
+    "name": "Potomac Ave",
+    "lines": [
+      "BL",
+      "OR",
+      "SV"
+    ],
+    "lat": 38.8813,
+    "lon": -76.9852
+  },
+  {
+    "code": "D08",
+    "codes": [
+      "D08"
+    ],
+    "name": "Stadium-Armory",
+    "lines": [
+      "BL",
+      "OR",
+      "SV"
+    ],
+    "lat": 38.88833,
+    "lon": -76.97709
+  },
+  {
+    "code": "D09",
+    "codes": [
+      "D09"
+    ],
+    "name": "Minnesota Ave",
+    "lines": [
+      "OR"
+    ],
+    "lat": 38.89916,
+    "lon": -76.94674
+  },
+  {
+    "code": "D10",
+    "codes": [
+      "D10"
+    ],
+    "name": "Deanwood",
+    "lines": [
+      "OR"
+    ],
+    "lat": 38.90807,
+    "lon": -76.93534
+  },
+  {
+    "code": "D11",
+    "codes": [
+      "D11"
+    ],
+    "name": "Cheverly",
+    "lines": [
+      "OR"
+    ],
+    "lat": 38.91663,
+    "lon": -76.91666
+  },
+  {
+    "code": "D12",
+    "codes": [
+      "D12"
+    ],
+    "name": "Landover",
+    "lines": [
+      "OR"
+    ],
+    "lat": 38.9335,
+    "lon": -76.89126
+  },
+  {
+    "code": "D13",
+    "codes": [
+      "D13"
+    ],
+    "name": "New Carrollton",
+    "lines": [
+      "OR"
+    ],
+    "lat": 38.94801,
+    "lon": -76.87188
+  },
+  {
+    "code": "E01",
+    "codes": [
+      "E01"
+    ],
+    "name": "Mount Vernon Square",
+    "lines": [
+      "GR",
+      "YL"
+    ],
+    "lat": 38.90553,
+    "lon": -77.02193
+  },
+  {
+    "code": "E02",
+    "codes": [
+      "E02"
+    ],
+    "name": "Shaw-Howard University",
+    "lines": [
+      "GR",
+      "YL"
+    ],
+    "lat": 38.91347,
+    "lon": -77.02192
+  },
+  {
+    "code": "E03",
+    "codes": [
+      "E03"
+    ],
+    "name": "U Street",
+    "lines": [
+      "GR",
+      "YL"
+    ],
+    "lat": 38.917,
+    "lon": -77.02739
+  },
+  {
+    "code": "E04",
+    "codes": [
+      "E04"
+    ],
+    "name": "Columbia Heights",
+    "lines": [
+      "GR",
+      "YL"
+    ],
+    "lat": 38.92868,
+    "lon": -77.03281
+  },
+  {
+    "code": "E05",
+    "codes": [
+      "E05"
+    ],
+    "name": "Georgia Ave-Petworth",
+    "lines": [
+      "GR",
+      "YL"
+    ],
+    "lat": 38.93694,
+    "lon": -77.02417
+  },
+  {
+    "code": "E07",
+    "codes": [
+      "E07"
+    ],
+    "name": "West Hyattsville",
+    "lines": [
+      "YL",
+      "GR"
+    ],
+    "lat": 38.95523,
+    "lon": -76.96952
+  },
+  {
+    "code": "E08",
+    "codes": [
+      "E08"
+    ],
+    "name": "Hyattsville Crossing",
+    "lines": [
+      "YL",
+      "GR"
+    ],
+    "lat": 38.96534,
+    "lon": -76.95668
+  },
+  {
+    "code": "E09",
+    "codes": [
+      "E09"
+    ],
+    "name": "College Park-U of Md",
+    "lines": [
+      "YL",
+      "GR"
+    ],
+    "lat": 38.97846,
+    "lon": -76.92827
+  },
+  {
+    "code": "E10",
+    "codes": [
+      "E10"
+    ],
+    "name": "Greenbelt",
+    "lines": [
+      "YL",
+      "GR"
+    ],
+    "lat": 39.01106,
+    "lon": -76.91122
+  },
+  {
+    "code": "F02",
+    "codes": [
+      "F02"
+    ],
+    "name": "Archives",
+    "lines": [
+      "GR",
+      "YL"
+    ],
+    "lat": 38.89368,
+    "lon": -77.02192
+  },
+  {
+    "code": "F04",
+    "codes": [
+      "F04"
+    ],
+    "name": "Waterfront",
+    "lines": [
+      "GR"
+    ],
+    "lat": 38.87644,
+    "lon": -77.01751
+  },
+  {
+    "code": "F05",
+    "codes": [
+      "F05"
+    ],
+    "name": "Navy Yard-Ballpark",
+    "lines": [
+      "GR"
+    ],
+    "lat": 38.87647,
+    "lon": -77.00592
+  },
+  {
+    "code": "F06",
+    "codes": [
+      "F06"
+    ],
+    "name": "Anacostia",
+    "lines": [
+      "GR"
+    ],
+    "lat": 38.86219,
+    "lon": -76.99533
+  },
+  {
+    "code": "F07",
+    "codes": [
+      "F07"
+    ],
+    "name": "Congress Heights",
+    "lines": [
+      "GR"
+    ],
+    "lat": 38.84513,
+    "lon": -76.98808
+  },
+  {
+    "code": "F08",
+    "codes": [
+      "F08"
+    ],
+    "name": "Southern Avenue",
+    "lines": [
+      "GR"
+    ],
+    "lat": 38.84139,
+    "lon": -76.97487
+  },
+  {
+    "code": "F09",
+    "codes": [
+      "F09"
+    ],
+    "name": "Naylor Road",
+    "lines": [
+      "GR"
+    ],
+    "lat": 38.85113,
+    "lon": -76.95668
+  },
+  {
+    "code": "F10",
+    "codes": [
+      "F10"
+    ],
+    "name": "Suitland",
+    "lines": [
+      "GR"
+    ],
+    "lat": 38.84448,
+    "lon": -76.93267
+  },
+  {
+    "code": "F11",
+    "codes": [
+      "F11"
+    ],
+    "name": "Branch Ave",
+    "lines": [
+      "GR"
+    ],
+    "lat": 38.82685,
+    "lon": -76.91208
+  },
+  {
+    "code": "G01",
+    "codes": [
+      "G01"
+    ],
+    "name": "Benning Road",
+    "lines": [
+      "BL",
+      "SV"
+    ],
+    "lat": 38.89045,
+    "lon": -76.93753
+  },
+  {
+    "code": "G02",
+    "codes": [
+      "G02"
+    ],
+    "name": "Capitol Heights",
+    "lines": [
+      "BL",
+      "SV"
+    ],
+    "lat": 38.88927,
+    "lon": -76.91316
+  },
+  {
+    "code": "G03",
+    "codes": [
+      "G03"
+    ],
+    "name": "Addison Road",
+    "lines": [
+      "BL",
+      "SV"
+    ],
+    "lat": 38.88672,
+    "lon": -76.89441
+  },
+  {
+    "code": "G04",
+    "codes": [
+      "G04"
+    ],
+    "name": "Morgan Boulevard",
+    "lines": [
+      "BL",
+      "SV"
+    ],
+    "lat": 38.89374,
+    "lon": -76.86834
+  },
+  {
+    "code": "G05",
+    "codes": [
+      "G05"
+    ],
+    "name": "Downtown Largo",
+    "lines": [
+      "BL",
+      "SV"
+    ],
+    "lat": 38.9004,
+    "lon": -76.84493
+  },
+  {
+    "code": "J02",
+    "codes": [
+      "J02"
+    ],
+    "name": "Van Dorn Street",
+    "lines": [
+      "BL"
+    ],
+    "lat": 38.79931,
+    "lon": -77.12911
+  },
+  {
+    "code": "J03",
+    "codes": [
+      "J03"
+    ],
+    "name": "Franconia-Springfield",
+    "lines": [
+      "BL"
+    ],
+    "lat": 38.76634,
+    "lon": -77.1684
+  },
+  {
+    "code": "K01",
+    "codes": [
+      "K01"
+    ],
+    "name": "Court House",
+    "lines": [
+      "OR",
+      "SV"
+    ],
+    "lat": 38.89077,
+    "lon": -77.08565
+  },
+  {
+    "code": "K02",
+    "codes": [
+      "K02"
+    ],
+    "name": "Clarendon",
+    "lines": [
+      "OR",
+      "SV"
+    ],
+    "lat": 38.88708,
+    "lon": -77.09525
+  },
+  {
+    "code": "K03",
+    "codes": [
+      "K03"
+    ],
+    "name": "Virginia Square-GMU",
+    "lines": [
+      "OR",
+      "SV"
+    ],
+    "lat": 38.88294,
+    "lon": -77.10331
+  },
+  {
+    "code": "K04",
+    "codes": [
+      "K04"
+    ],
+    "name": "Ballston-MU",
+    "lines": [
+      "OR",
+      "SV"
+    ],
+    "lat": 38.88201,
+    "lon": -77.11151
+  },
+  {
+    "code": "K05",
+    "codes": [
+      "K05"
+    ],
+    "name": "East Falls Church",
+    "lines": [
+      "OR",
+      "SV"
+    ],
+    "lat": 38.88598,
+    "lon": -77.15682
+  },
+  {
+    "code": "K06",
+    "codes": [
+      "K06"
+    ],
+    "name": "West Falls Church",
+    "lines": [
+      "OR"
+    ],
+    "lat": 38.90079,
+    "lon": -77.18897
+  },
+  {
+    "code": "K07",
+    "codes": [
+      "K07"
+    ],
+    "name": "Dunn Loring",
+    "lines": [
+      "OR"
+    ],
+    "lat": 38.88335,
+    "lon": -77.22812
+  },
+  {
+    "code": "K08",
+    "codes": [
+      "K08"
+    ],
+    "name": "Vienna/Fairfax-GMU",
+    "lines": [
+      "OR"
+    ],
+    "lat": 38.8776,
+    "lon": -77.27229
+  },
+  {
+    "code": "N01",
+    "codes": [
+      "N01"
+    ],
+    "name": "McLean",
+    "lines": [
+      "SV"
+    ],
+    "lat": 38.92453,
+    "lon": -77.2101
+  },
+  {
+    "code": "N02",
+    "codes": [
+      "N02"
+    ],
+    "name": "Tysons",
+    "lines": [
+      "SV"
+    ],
+    "lat": 38.9206,
+    "lon": -77.22232
+  },
+  {
+    "code": "N03",
+    "codes": [
+      "N03"
+    ],
+    "name": "Greensboro",
+    "lines": [
+      "SV"
+    ],
+    "lat": 38.92111,
+    "lon": -77.234
+  },
+  {
+    "code": "N04",
+    "codes": [
+      "N04"
+    ],
+    "name": "Spring Hill",
+    "lines": [
+      "SV"
+    ],
+    "lat": 38.92926,
+    "lon": -77.24193
+  },
+  {
+    "code": "N06",
+    "codes": [
+      "N06"
+    ],
+    "name": "Wiehle-Reston East",
+    "lines": [
+      "SV"
+    ],
+    "lat": 38.94775,
+    "lon": -77.34008
+  },
+  {
+    "code": "N07",
+    "codes": [
+      "N07"
+    ],
+    "name": "Reston Town Center",
+    "lines": [
+      "SV"
+    ],
+    "lat": 38.95282,
+    "lon": -77.36065
+  },
+  {
+    "code": "N08",
+    "codes": [
+      "N08"
+    ],
+    "name": "Herndon",
+    "lines": [
+      "SV"
+    ],
+    "lat": 38.95284,
+    "lon": -77.38526
+  },
+  {
+    "code": "N09",
+    "codes": [
+      "N09"
+    ],
+    "name": "Innovation Center",
+    "lines": [
+      "SV"
+    ],
+    "lat": 38.96102,
+    "lon": -77.41608
+  },
+  {
+    "code": "N10",
+    "codes": [
+      "N10"
+    ],
+    "name": "Dulles International Airport",
+    "lines": [
+      "SV"
+    ],
+    "lat": 38.95579,
+    "lon": -77.44832
+  },
+  {
+    "code": "N11",
+    "codes": [
+      "N11"
+    ],
+    "name": "Loudoun Gateway",
+    "lines": [
+      "SV"
+    ],
+    "lat": 38.99225,
+    "lon": -77.461
+  },
+  {
+    "code": "N12",
+    "codes": [
+      "N12"
+    ],
+    "name": "Ashburn",
+    "lines": [
+      "SV"
+    ],
+    "lat": 39.00497,
+    "lon": -77.4912
+  }
 ]
