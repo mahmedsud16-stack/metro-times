@@ -380,6 +380,13 @@ function bindEvents() {
   $('stationList').addEventListener('click', listClick);
 }
 
+/* ---------- service worker (PWA install; silent if unavailable) ---------- */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function () { /* offline install unavailable; app still works */ });
+  });
+}
+
 /* ---------- boot ---------- */
 fetch('stations.json').then(function (r) { return r.json(); }).then(function (data) {
   stations = data;
