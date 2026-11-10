@@ -1,6 +1,6 @@
 /* Metro PWA service worker — app shell only.
    WMATA API calls (api.wmata.com) are NEVER cached: predictions always come fresh from the network. */
-var CACHE = 'metro-pwa-v6';
+var CACHE = 'metro-pwa-v7';
 var SHELL = [
   './',
   './index.html',
@@ -34,10 +34,15 @@ self.addEventListener('fetch', function (e) {
   // Live WMATA predictions: network-only, never cached.
   if (url.hostname === 'api.wmata.com') return;
   // App shell (same origin, known paths): cache-first, network fallback.
+  // NOTE: this site is deployed under the /metro-times/ subpath, so a shell
+  // file's real path is '/metro-times/stations.json', not '/stations.json'.
+  // Match against the registration scope so the cache is actually served.
   var path = url.pathname;
+  var scopeBase = new URL(self.registration.scope).pathname.replace(/\/$/, '');
   var isShell = SHELL.some(function (p) {
     var norm = p.replace(/^\.\//, '/');
-    return path === norm || (p === './' && (path === '/' || path.endsWith('/metro-times/')));
+    if (p === './') return path === '/' || path === scopeBase + '/' || path === scopeBase;
+    return path === norm || path === scopeBase + norm || path.endsWith(norm);
   });
   if (!isShell) return;
   e.respondWith(

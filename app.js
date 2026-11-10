@@ -496,7 +496,29 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ---------- boot ---------- */
-fetch('stations.json').then(function (r) { return r.json(); }).then(function (data) {
+// The station list is the whole app — a transient failure (e.g. a 404 HTML
+// page while a deploy is publishing) must never strand the user on a
+// dead-end screen: check r.ok before parsing, retry once after a short
+// delay, and only then offer a working Retry button.
+var STATION_RETRY_MS = 1500;
+function loadStations(attempt) {
+  return fetch('stations.json').then(function (r) {
+    if (!r.ok) throw new Error('stations.json HTTP ' + r.status);
+    return r.json();
+  }).catch(function (err) {
+    if (attempt < 1) {
+      return new Promise(function (resolve) { setTimeout(resolve, STATION_RETRY_MS); })
+        .then(function () { return loadStations(attempt + 1); });
+    }
+    throw err;
+  });
+}
+function showBootError() {
+  document.body.innerHTML = '<div style="padding:20px"><p>Could not load the station list — check your connection and try again.</p><p><button id="retryBootBtn" class="primary big" type="button">Retry</button></p></div>';
+  var b = document.getElementById('retryBootBtn');
+  if (b) b.addEventListener('click', function () { location.reload(); });
+}
+loadStations(0).then(function (data) {
   stations = data;
   stations.forEach(function (s) { s.codes.forEach(function (c) { byCode[c] = s; }); });
   loadPrefs();
@@ -507,6 +529,4 @@ fetch('stations.json').then(function (r) { return r.json(); }).then(function (da
   renderAll();
   fetchPredictions();
   startAutoRefresh();
-}).catch(function () {
-  document.body.innerHTML = '<p style="padding:20px">Could not load the station list — check your connection and reopen the page.</p>';
-});
+}).catch(function () { showBootError(); });
