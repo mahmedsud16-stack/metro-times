@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Metro Times</title>
 <meta name="description" content="Live Washington Metro (WMATA) train times — nearest station, search, favorites, and updates every 30 seconds.">
-<meta name="theme-color" content="#0b3d2e">
+<meta name="theme-color" content="#16233f">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="stylesheet" href="styles.css">
@@ -40,6 +40,11 @@
       <button id="changeKeyBtn" class="linklike light" title="Change API key">Change key</button>
     </header>
     <div class="linebar" aria-hidden="true"><span style="background:#BF0D3E"></span><span style="background:#ED8B00"></span><span style="background:#A2AAAD"></span><span style="background:#009CDE"></span><span style="background:#FFD100"></span><span style="background:#00B140"></span></div>
+
+    <!-- In-app install: shown only when Chrome offers the install prompt -->
+    <div class="row install-row" id="installRow" hidden>
+      <button id="installBtn" class="primary big">Install app</button>
+    </div>
 
     <!-- Location -->
     <section class="card" id="locCard">

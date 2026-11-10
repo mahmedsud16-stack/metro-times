@@ -38,7 +38,7 @@ var LINE_ORDER = {
 };
 var LINE_SECTION_ORDER = ['RD', 'OR', 'SV', 'BL', 'YL', 'GR'];
 // Light line colors need dark text on the pill for contrast.
-function pillTextColor(hex) { return (hex === '#FFD100' || hex === '#A2AAAD') ? '#1c2b26' : '#fff'; }
+function pillTextColor(hex) { return (hex === '#FFD100' || hex === '#A2AAAD') ? '#16233f' : '#fff'; }
 
 var stations = [];
 var byCode = {};
@@ -396,6 +396,17 @@ function bindEvents() {
   $('locateBtn').addEventListener('click', onLocate);
   $('cancelLocateBtn').addEventListener('click', onLocateCancel);
   $('refreshBtn').addEventListener('click', fetchPredictions);
+  $('installBtn').addEventListener('click', function () {
+    if (!deferredPrompt) return;
+    var p = deferredPrompt;
+    deferredPrompt = null;
+    p.prompt();
+    if (p.userChoice && p.userChoice.then) {
+      p.userChoice.then(function () { updateInstallButton(); });
+    } else {
+      updateInstallButton();
+    }
+  });
   $('clearAnchorBtn').addEventListener('click', function () {
     anchorCode = null; saveAnchor(); renderAnchorLine(); renderStations();
   });
@@ -434,6 +445,31 @@ function bindEvents() {
   $('favList').addEventListener('click', listClick);
   $('stationList').addEventListener('click', listClick);
 }
+
+/* ---------- in-app install prompt ---------- */
+// The "Install app" button only appears when Chrome actually offers the
+// install prompt (beforeinstallprompt). It stays hidden when the app is
+// already installed/running standalone, or when the prompt never fires —
+// so there is never a dead button.
+var deferredPrompt = null;
+function isStandalone() {
+  return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+    window.navigator.standalone === true;
+}
+function updateInstallButton() {
+  var row = $('installRow');
+  if (!row) return;
+  row.hidden = !(deferredPrompt && !isStandalone());
+}
+window.addEventListener('beforeinstallprompt', function (e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  updateInstallButton();
+});
+window.addEventListener('appinstalled', function () {
+  deferredPrompt = null;
+  updateInstallButton();
+});
 
 /* ---------- service worker (PWA install; silent if unavailable) ---------- */
 if ('serviceWorker' in navigator) {
