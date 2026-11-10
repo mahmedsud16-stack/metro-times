@@ -58,6 +58,8 @@ button.linklike.light { color: #c3cfe8; }
 .error { color: #a11; }
 .row { display: flex; gap: 8px; margin: 12px 0 4px; flex-wrap: wrap; }
 .install-row { margin: 0 0 16px; }
+.notice { background: #fff3d6; border: 1px solid #e0b93e; color: #5b4a12; border-radius: 12px; padding: 12px 14px; margin: 0 0 16px; font-size: .92rem; }
+.notice .linklike { color: #0069A8; }
 
 button {
   font: inherit;

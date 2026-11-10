@@ -397,15 +397,26 @@ function bindEvents() {
   $('cancelLocateBtn').addEventListener('click', onLocateCancel);
   $('refreshBtn').addEventListener('click', fetchPredictions);
   $('installBtn').addEventListener('click', function () {
-    if (!deferredPrompt) return;
     var p = deferredPrompt;
     deferredPrompt = null;
-    p.prompt();
-    if (p.userChoice && p.userChoice.then) {
-      p.userChoice.then(function () { updateInstallButton(); });
-    } else {
-      updateInstallButton();
+    updateInstallButton(); // hide immediately — a dead button can never be tapped twice
+    if (!p) { showInstallNotice(); return; }
+    try {
+      var r = p.prompt();
+      if (r && r.catch) r.catch(function () { showInstallNotice(); });
+    } catch (err) {
+      showInstallNotice();
+      return;
     }
+    if (p.userChoice && p.userChoice.then) {
+      p.userChoice.then(function (choice) {
+        if (!choice || choice.outcome !== 'accepted') showInstallNotice();
+      }, function () { showInstallNotice(); });
+    }
+  });
+  $('installNoticeClose').addEventListener('click', function () {
+    var n = $('installNotice');
+    if (n) n.hidden = true;
   });
   $('clearAnchorBtn').addEventListener('click', function () {
     anchorCode = null; saveAnchor(); renderAnchorLine(); renderStations();
@@ -460,6 +471,12 @@ function updateInstallButton() {
   var row = $('installRow');
   if (!row) return;
   row.hidden = !(deferredPrompt && !isStandalone());
+}
+// Shown when the stored install prompt is missing, fails, or resolves
+// without installing — the button alone can never fail silently again.
+function showInstallNotice() {
+  var n = $('installNotice');
+  if (n) n.hidden = false;
 }
 window.addEventListener('beforeinstallprompt', function (e) {
   e.preventDefault();
