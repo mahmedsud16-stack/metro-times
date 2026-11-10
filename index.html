@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>مواعيد المترو</title>
-<meta name="description" content="مواعيد قطارات مترو واشنطن (WMATA) المباشرة — أقرب محطة، بحث، مفضلة، وتحديث كل ٣٠ ثانية.">
+<title>Metro Times</title>
+<meta name="description" content="Live Washington Metro (WMATA) train times — nearest station, search, favorites, and updates every 30 seconds.">
 <meta name="theme-color" content="#0b3d2e">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -15,17 +15,17 @@
 
   <!-- ===== Key entry screen (shown when no key is stored) ===== -->
   <section id="keyScreen" class="card" hidden>
-    <h1>مواعيد المترو</h1>
-    <p class="muted">لعرض مواعيد القطارات المباشرة نحتاج مفتاح WMATA المجاني الخاص بك.</p>
+    <h1>Metro Times</h1>
+    <p class="muted">To show live train times, we need your free WMATA API key.</p>
     <ol class="steps">
-      <li>افتح <a href="https://developer.wmata.com/" target="_blank" rel="noopener">developer.wmata.com</a> وسجّل حسابًا مجانيًا.</li>
-      <li>اشترك في باقة Default (المجانية) وانسخ المفتاح Primary Key.</li>
-      <li>الصق المفتاح هنا — يُحفظ على جهازك فقط ولا يُرسل لأي خادم آخر.</li>
+      <li>Open <a href="https://developer.wmata.com/" target="_blank" rel="noopener">developer.wmata.com</a> and create a free account.</li>
+      <li>Subscribe to the Default (free) plan and copy your Primary Key.</li>
+      <li>Paste the key here — it is saved on your device only and is never sent to any other server.</li>
     </ol>
-    <label for="keyInput">مفتاح WMATA</label>
-    <input id="keyInput" type="password" autocomplete="off" placeholder="الصق المفتاح هنا" dir="ltr">
+    <label for="keyInput">WMATA API key</label>
+    <input id="keyInput" type="password" autocomplete="off" placeholder="Paste your key here">
     <div class="row">
-      <button id="saveKeyBtn" class="primary">حفظ المفتاح</button>
+      <button id="saveKeyBtn" class="primary">Save key</button>
     </div>
     <p id="keyError" class="error" hidden></p>
   </section>
@@ -33,49 +33,53 @@
   <!-- ===== Main app ===== -->
   <main id="mainApp" hidden>
     <header>
-      <h1>مواعيد المترو</h1>
-      <button id="changeKeyBtn" class="linklike" title="تغيير المفتاح">تغيير المفتاح</button>
+      <div>
+        <h1>Metro Times</h1>
+        <p class="subtitle">DC Metro live times</p>
+      </div>
+      <button id="changeKeyBtn" class="linklike light" title="Change API key">Change key</button>
     </header>
 
     <!-- Location -->
     <section class="card" id="locCard">
-      <h2>الموقع وأقرب محطة</h2>
+      <h2>Your location</h2>
+      <p id="nearestStation" class="nearest"></p>
+      <p id="locStatus" class="muted">Tap “Nearest station” to find your location — it is never detected automatically when the app opens.</p>
       <div class="row">
-        <button id="locateBtn" class="primary">أقرب محطة لي</button>
-        <button id="cancelLocateBtn" class="secondary" hidden>إيقاف البحث</button>
+        <button id="locateBtn" class="primary big">Nearest station</button>
+        <button id="cancelLocateBtn" class="secondary" hidden>Stop search</button>
       </div>
-      <p id="locStatus" class="muted">اضغط «أقرب محطة لي» لتحديد موقعك — لن يتم تحديد موقعك تلقائيًا عند فتح التطبيق.</p>
       <p id="anchorLine" class="muted" hidden></p>
-      <button id="clearAnchorBtn" class="linklike" hidden>إزالة موقعي المحفوظ</button>
+      <button id="clearAnchorBtn" class="linklike" hidden>Remove saved location</button>
     </section>
 
     <!-- Predictions board -->
     <section class="card" id="boardCard">
       <div class="board-head">
         <h2 id="boardStation">—</h2>
-        <span id="boardLines" class="linedots"></span>
+        <span id="boardLines" class="linepills"></span>
       </div>
       <p id="boardUpdated" class="muted"></p>
       <ul id="trainList" class="trains"></ul>
       <p id="boardMsg" class="muted"></p>
       <div class="row">
-        <button id="refreshBtn" class="secondary">تحديث الآن</button>
+        <button id="refreshBtn" class="secondary">Refresh now</button>
       </div>
     </section>
 
     <!-- Search + line filter -->
     <section class="card">
-      <h2>المحطات</h2>
-      <input id="searchInput" type="search" placeholder="ابحث باسم المحطة أو رمزها… مثال: Ashburn أو N12" dir="ltr" style="text-align:right">
+      <h2>Stations</h2>
+      <input id="searchInput" type="search" placeholder="Search by station name or code, e.g. Ashburn or N12">
       <div id="lineFilter" class="chips"></div>
-      <h3>المفضلة</h3>
-      <ul id="favList" class="stations"></ul>
-      <h3>كل المحطات <span id="stationCount" class="muted"></span></h3>
+      <h3>Favorites</h3>
+      <div id="favList" class="chips"></div>
+      <h3>All stations <span id="stationCount" class="muted"></span></h3>
       <ul id="stationList" class="stations"></ul>
     </section>
 
     <footer class="muted">
-      البيانات المباشرة من WMATA (api.wmata.com). قائمة المحطات من بيانات عامة (OpenStreetMap + WMATA).
+      Live data from WMATA (api.wmata.com). Station list from public data (OpenStreetMap + WMATA).
     </footer>
   </main>
 </div>

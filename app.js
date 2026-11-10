@@ -1,4 +1,4 @@
-/* مواعيد المترو — standalone static app (GitHub Pages).
+/* Metro Times — standalone static app (GitHub Pages).
    Live data: WMATA StationPrediction API, called directly from the browser
    (api.wmata.com sends Access-Control-Allow-Origin: *). The WMATA key is
    NEVER in this code — the user enters it once and it is stored only in
@@ -15,13 +15,15 @@ var GEO_BUDGET_MS = 25000; // ONE total geolocation budget
 var REFRESH_MS = 30000;
 
 var LINES = {
-  RD: { name: 'الأحمر', color: '#BF0D3E' },
-  OR: { name: 'البرتقالي', color: '#ED8B00' },
-  SV: { name: 'الفضي', color: '#8A8D8F' },
-  BL: { name: 'الأزرق', color: '#009CDE' },
-  YL: { name: 'الأصفر', color: '#F2A900' },
-  GR: { name: 'الأخضر', color: '#00B140' }
+  RD: { name: 'Red', color: '#BF0D3E' },
+  OR: { name: 'Orange', color: '#ED8B00' },
+  SV: { name: 'Silver', color: '#A2AAAD' },
+  BL: { name: 'Blue', color: '#009CDE' },
+  YL: { name: 'Yellow', color: '#FFD100' },
+  GR: { name: 'Green', color: '#00B140' }
 };
+// Light line colors need dark text on the pill for contrast.
+function pillTextColor(hex) { return (hex === '#FFD100' || hex === '#A2AAAD') ? '#1c2b26' : '#fff'; }
 
 var stations = [];
 var byCode = {};
@@ -74,6 +76,12 @@ function lineDots(codes) {
     return '<span class="dot" title="' + esc(L.name) + '" style="background:' + L.color + '"></span>';
   }).join('');
 }
+function linePills(codes) {
+  return codes.map(function (c) {
+    var L = LINES[c] || { name: c, color: '#888' };
+    return '<span class="pill" title="' + esc(L.name) + ' line" style="background:' + L.color + ';color:' + pillTextColor(L.color) + '">' + esc(c) + '</span>';
+  }).join('');
+}
 
 /* ---------- key entry ---------- */
 function showKeyScreen(msg) {
@@ -88,7 +96,7 @@ function showMain() {
 }
 function saveKey() {
   var v = $('keyInput').value.trim();
-  if (!v) { $('keyError').textContent = 'الصق المفتاح أولًا.'; $('keyError').hidden = false; return; }
+  if (!v) { $('keyError').textContent = 'Paste your key first.'; $('keyError').hidden = false; return; }
   apiKey = v;
   lsSet(LS_KEY, v);
   $('keyInput').value = '';
@@ -99,12 +107,12 @@ function saveKey() {
 
 /* ---------- location ---------- */
 function geoErrorMessage(err) {
-  if (!err) return 'تعذّر الحصول على الموقع.';
+  if (!err) return 'Could not get your location.';
   switch (err.code) {
-    case 1: return 'تم رفض الوصول إلى الموقع — فعّل إذن الموقع من إعدادات المتصفح وحاول مجددًا.';
-    case 2: return 'تعذّر الحصول على الموقع — تأكد من تشغيل خدمة الموقع (GPS) وحاول مجددًا.';
-    case 3: return 'انتهت مهلة تحديد الموقع (٢٥ ثانية) — حاول مجددًا في مكان بإشارة أفضل.';
-    default: return 'خطأ غير معروف أثناء تحديد الموقع.';
+    case 1: return 'Location access was denied — enable location permission in your browser settings and try again.';
+    case 2: return 'Could not get your location — make sure location services (GPS) are on and try again.';
+    case 3: return 'Location request timed out (25 seconds) — try again where the signal is better.';
+    default: return 'Unknown error while getting your location.';
   }
 }
 function setLocating(on) {
@@ -119,15 +127,15 @@ function stopLocating() {
 function onLocateCancel() {
   locateCancelled = true;
   stopLocating();
-  $('locStatus').textContent = 'تم إيقاف البحث عن الموقع.';
+  $('nearestStation').textContent = '';
+  $('locStatus').textContent = 'Location search stopped.';
 }
 function useLocation(lat, lon, source) {
   userLoc = { lat: lat, lon: lon, source: source };
   var nearest = nearestStation();
   if (nearest) {
-    $('locStatus').textContent = source === 'gps'
-      ? 'موقعك الحالي: أقرب محطة ' + nearest.name + ' (' + nearest.dist.toFixed(1) + ' كم).'
-      : 'موقعك المحفوظ: أقرب محطة ' + nearest.name + ' (' + nearest.dist.toFixed(1) + ' كم).';
+    $('nearestStation').textContent = nearest.name + ' — ' + nearest.dist.toFixed(1) + ' km';
+    $('locStatus').textContent = source === 'gps' ? 'Your current location' : 'Your saved location';
     // The board follows the nearest station: select it, persist the
     // selection exactly like a manual station pick, and load its live
     // predictions. This covers both GPS success and the saved-anchor
@@ -151,7 +159,7 @@ function fallbackToAnchor(reason) {
   if (anchorCode) {
     var a = primaryStation(anchorCode);
     if (a) {
-      $('locStatus').textContent = reason + ' — تم استخدام موقعك المحفوظ (' + a.name + ').';
+      $('locStatus').textContent = reason + ' — using your saved location (' + a.name + ').';
       useLocation(a.lat, a.lon, 'anchor');
       return true;
     }
@@ -160,20 +168,21 @@ function fallbackToAnchor(reason) {
 }
 function onLocate() {
   if (!navigator.geolocation) {
-    $('locStatus').textContent = 'المتصفح لا يدعم تحديد الموقع.';
-    fallbackToAnchor('المتصفح لا يدعم تحديد الموقع');
+    $('locStatus').textContent = 'This browser does not support location.';
+    if (!fallbackToAnchor('This browser does not support location')) $('nearestStation').textContent = '';
     return;
   }
   locateCancelled = false;
   setLocating(true);
-  $('locStatus').textContent = 'جارٍ تحديد موقعك… (حتى ٢٥ ثانية)';
+  $('nearestStation').textContent = '';
+  $('locStatus').textContent = 'Locating you… (up to 25 seconds)';
   var done = false;
   function finish() { if (!done) { done = true; stopLocating(); } }
   locateTimer = setTimeout(function () {
     if (done) return;
     finish();
-    $('locStatus').textContent = 'انتهت مهلة تحديد الموقع (٢٥ ثانية).';
-    fallbackToAnchor('انتهت مهلة تحديد الموقع');
+    $('locStatus').textContent = 'Location request timed out (25 seconds).';
+    if (!fallbackToAnchor('Location request timed out')) $('nearestStation').textContent = '';
   }, GEO_BUDGET_MS);
   try {
     navigator.geolocation.getCurrentPosition(function (pos) {
@@ -185,12 +194,12 @@ function onLocate() {
       finish();
       var msg = geoErrorMessage(err);
       $('locStatus').textContent = msg;
-      fallbackToAnchor(msg);
+      if (!fallbackToAnchor(msg)) $('nearestStation').textContent = '';
     }, { enableHighAccuracy: true, timeout: GEO_BUDGET_MS, maximumAge: 0 });
   } catch (e) {
     finish();
-    $('locStatus').textContent = 'تعذّر الحصول على الموقع.';
-    fallbackToAnchor('تعذّر الحصول على الموقع');
+    $('locStatus').textContent = 'Could not get your location.';
+    if (!fallbackToAnchor('Could not get your location')) $('nearestStation').textContent = '';
   }
 }
 
@@ -201,17 +210,17 @@ function minSortValue(min) {
   return isNaN(n) ? 999 : n;
 }
 function minLabel(min) {
-  if (min === 'ARR') return 'يصل الآن';
-  if (min === 'BRD') return 'يصعد الآن';
+  if (min === 'ARR') return 'ARR';
+  if (min === 'BRD') return 'BRD';
   if (min === '—' || min === '' || min == null) return '—';
-  return min + ' د';
+  return min + ' min';
 }
 function fetchPredictions() {
   var st = primaryStation(selectedCode);
   if (!st || !apiKey) return;
   $('boardStation').textContent = st.name;
-  $('boardLines').innerHTML = lineDots(st.lines);
-  $('boardMsg').textContent = 'جارٍ جلب المواعيد…';
+  $('boardLines').innerHTML = linePills(st.lines);
+  $('boardMsg').textContent = 'Loading times…';
   $('trainList').innerHTML = '';
   var urls = st.codes.map(function (c) {
     return fetch('https://api.wmata.com/StationPrediction.svc/json/GetPrediction/' + c, {
@@ -226,7 +235,7 @@ function fetchPredictions() {
     .then(function (results) {
       var badKey = results.some(function (r) { return r && r.__error && r.__error.status === 401; });
       if (badKey) {
-        $('boardMsg').textContent = 'المفتاح غير صحيح أو منتهي — تحقق من مفتاح WMATA وأعد إدخاله.';
+        $('boardMsg').textContent = 'The key is invalid or expired — check your WMATA key and enter it again.';
         return;
       }
       var trains = [];
@@ -243,16 +252,16 @@ function fetchPredictions() {
       trains.sort(function (a, b) { return minSortValue(a.Min) - minSortValue(b.Min); });
       var html = trains.map(function (t) {
         var L = LINES[t.Line] || { name: t.Line, color: '#888' };
-        return '<li><span class="dot" style="background:' + L.color + '"></span>' +
+        return '<li><span class="pill" title="' + esc(L.name) + ' line" style="background:' + L.color + ';color:' + pillTextColor(L.color) + '">' + esc(t.Line || '') + '</span>' +
           '<span class="tr-dest">' + esc(t.DestinationName || t.Destination || '') + '</span>' +
           '<span class="tr-min">' + esc(minLabel(t.Min)) + '</span></li>';
       }).join('');
       $('trainList').innerHTML = html;
-      $('boardMsg').textContent = trains.length ? '' : 'لا توجد قطارات قادمة حاليًا لهذه المحطة.';
-      $('boardUpdated').textContent = 'آخر تحديث: ' + new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' — يتحدث تلقائيًا كل ٣٠ ثانية.';
+      $('boardMsg').textContent = trains.length ? '' : 'No trains arriving at this station right now.';
+      $('boardUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' — refreshes automatically every 30 seconds.';
     })
     .catch(function () {
-      $('boardMsg').textContent = 'تعذّر الاتصال بخدمة WMATA — تحقق من الإنترنت وحاول مجددًا.';
+      $('boardMsg').textContent = 'Could not reach WMATA — check your connection and try again.';
     });
 }
 function startAutoRefresh() {
@@ -275,45 +284,47 @@ function stationRow(st) {
   var isSel = selectedCode && st.codes.indexOf(selectedCode) !== -1;
   var dist = '';
   if (userLoc) {
-    dist = '<span class="st-dist">' + haversineKm(userLoc.lat, userLoc.lon, st.lat, st.lon).toFixed(1) + ' كم</span>';
+    dist = '<span class="st-dist">' + haversineKm(userLoc.lat, userLoc.lon, st.lat, st.lon).toFixed(1) + ' km</span>';
   }
   var isAnchor = anchorCode && st.codes.indexOf(anchorCode) !== -1;
   return '<li data-code="' + esc(st.code) + '" class="' + (isSel ? 'selected' : '') + '">' +
     '<span class="st-name">' + esc(st.name) + '</span>' +
     '<span class="linedots">' + lineDots(st.lines) + '</span>' +
     '<span class="st-code">' + esc(st.code) + '</span>' + dist +
-    '<button class="star ' + (isFav ? '' : 'off') + '" data-fav="' + esc(st.code) + '" title="مفضلة">' + (isFav ? '★' : '☆') + '</button>' +
-    '<button class="anchor-btn ' + (isAnchor ? 'set' : '') + '" data-anchor="' + esc(st.code) + '" title="حفظ كموقعي">' + (isAnchor ? 'موقعي ✓' : 'موقعي') + '</button>' +
+    '<button class="star ' + (isFav ? '' : 'off') + '" data-fav="' + esc(st.code) + '" title="Favorite">' + (isFav ? '★' : '☆') + '</button>' +
+    '<button class="anchor-btn ' + (isAnchor ? 'set' : '') + '" data-anchor="' + esc(st.code) + '" title="Save as my saved location">' + (isAnchor ? 'Saved ✓' : 'Save location') + '</button>' +
     '</li>';
 }
 function renderStations() {
   var favStations = favorites.map(primaryStation).filter(Boolean);
   $('favList').innerHTML = favStations.length
-    ? favStations.map(stationRow).join('')
-    : '<li class="muted">لا توجد محطات مفضلة بعد — اضغط ★ بجانب أي محطة.</li>';
+    ? favStations.map(function (st) {
+        return '<button class="chip fav-chip" data-code="' + esc(st.code) + '"><span class="star-glyph">★</span> ' + esc(st.name) + '</button>';
+      }).join('')
+    : '<p class="muted">No favorite stations yet — tap ★ next to any station.</p>';
   var list = stations.filter(stationMatches);
   if (userLoc) {
     list = list.slice().sort(function (a, b) {
       return haversineKm(userLoc.lat, userLoc.lon, a.lat, a.lon) - haversineKm(userLoc.lat, userLoc.lon, b.lat, b.lon);
     });
   }
-  $('stationList').innerHTML = list.length ? list.map(stationRow).join('') : '<li class="muted">لا توجد نتائج مطابقة.</li>';
-  $('stationCount').textContent = '(' + list.length + ' من ' + stations.length + ')';
+  $('stationList').innerHTML = list.length ? list.map(stationRow).join('') : '<li class="muted">No matching stations.</li>';
+  $('stationCount').textContent = '(' + list.length + ' of ' + stations.length + ')';
 }
 function renderLineFilter() {
-  var chips = [{ code: 'ALL', name: 'الكل' }].concat(Object.keys(LINES).map(function (c) {
+  var chips = [{ code: 'ALL', name: 'All' }].concat(Object.keys(LINES).map(function (c) {
     return { code: c, name: LINES[c].name, color: LINES[c].color };
   }));
   $('lineFilter').innerHTML = chips.map(function (ch) {
-    var style = ch.color ? ' style="border-color:' + ch.color + '"' : '';
-    return '<button class="chip' + (lineFilter === ch.code ? ' active' : '') + '" data-line="' + ch.code + '"' + style + '>' + esc(ch.name) + '</button>';
+    var dot = ch.color ? '<span class="dot" style="background:' + ch.color + '"></span> ' : '';
+    return '<button class="chip' + (lineFilter === ch.code ? ' active' : '') + '" data-line="' + ch.code + '">' + dot + esc(ch.name) + '</button>';
   }).join('');
 }
 function renderAnchorLine() {
   if (anchorCode) {
     var a = primaryStation(anchorCode);
     $('anchorLine').hidden = false;
-    $('anchorLine').textContent = 'موقعك المحفوظ: ' + (a ? a.name : anchorCode) + ' — يُستخدم تلقائيًا عند فشل تحديد الموقع.';
+    $('anchorLine').textContent = 'Saved location: ' + (a ? a.name : anchorCode) + ' — used automatically if location detection fails.';
     $('clearAnchorBtn').hidden = false;
   } else {
     $('anchorLine').hidden = true;
@@ -325,7 +336,7 @@ function renderAll() {
   renderStations();
   renderAnchorLine();
   var st = primaryStation(selectedCode);
-  if (st) { $('boardStation').textContent = st.name; $('boardLines').innerHTML = lineDots(st.lines); }
+  if (st) { $('boardStation').textContent = st.name; $('boardLines').innerHTML = linePills(st.lines); }
 }
 
 /* ---------- events ---------- */
@@ -368,9 +379,9 @@ function bindEvents() {
       saveAnchor(); renderAnchorLine(); renderStations();
       return;
     }
-    var li = e.target.closest('li[data-code]');
-    if (li) {
-      selectedCode = li.dataset.code;
+    var pick = e.target.closest('[data-code]');
+    if (pick) {
+      selectedCode = pick.dataset.code;
       saveSelected();
       renderStations();
       fetchPredictions();
@@ -400,5 +411,5 @@ fetch('stations.json').then(function (r) { return r.json(); }).then(function (da
   fetchPredictions();
   startAutoRefresh();
 }).catch(function () {
-  document.body.innerHTML = '<p style="padding:20px">تعذّر تحميل قائمة المحطات — تحقق من الإنترنت وأعد فتح الصفحة.</p>';
+  document.body.innerHTML = '<p style="padding:20px">Could not load the station list — check your connection and reopen the page.</p>';
 });

@@ -1,6 +1,6 @@
 /* Metro PWA service worker — app shell only.
    WMATA API calls (api.wmata.com) are NEVER cached: predictions always come fresh from the network. */
-var CACHE = 'metro-pwa-v1';
+var CACHE = 'metro-pwa-v2';
 var SHELL = [
   './',
   './index.html',
