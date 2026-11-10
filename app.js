@@ -128,8 +128,15 @@ function useLocation(lat, lon, source) {
     $('locStatus').textContent = source === 'gps'
       ? 'موقعك الحالي: أقرب محطة ' + nearest.name + ' (' + nearest.dist.toFixed(1) + ' كم).'
       : 'موقعك المحفوظ: أقرب محطة ' + nearest.name + ' (' + nearest.dist.toFixed(1) + ' كم).';
+    // The board follows the nearest station: select it, persist the
+    // selection exactly like a manual station pick, and load its live
+    // predictions. This covers both GPS success and the saved-anchor
+    // fallback (both call useLocation).
+    selectedCode = nearest.code;
+    saveSelected();
   }
   renderStations();
+  if (nearest) fetchPredictions();
 }
 function nearestStation() {
   if (!userLoc) return null;
