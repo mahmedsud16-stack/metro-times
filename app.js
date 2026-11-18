@@ -474,7 +474,8 @@ function bindEvents() {
     }
     if (p.userChoice && p.userChoice.then) {
       p.userChoice.then(function (choice) {
-        if (!choice || choice.outcome !== 'accepted') showInstallNotice();
+        if (choice && choice.outcome === 'accepted') markInstalled(); // installed — hide the button for good
+        else showInstallNotice();
       }, function () { showInstallNotice(); });
     }
   });
@@ -523,10 +524,20 @@ function bindEvents() {
 
 /* ---------- in-app install prompt ---------- */
 // The "Install app" button only appears when Chrome actually offers the
-// install prompt (beforeinstallprompt). It stays hidden when the app is
-// already installed/running standalone, or when the prompt never fires —
-// so there is never a dead button.
+// install prompt (beforeinstallprompt) AND the app has never been installed
+// before. Once installed — by the button, by Chrome's own menu, or by an
+// earlier visit — the button stays hidden for good, so there is never a
+// dead button and never a button staring at an installed user.
 var deferredPrompt = null;
+var LS_INSTALLED = 'metro-installed';
+function isInstalled() {
+  try { return localStorage.getItem(LS_INSTALLED) === '1'; } catch (err) { return false; }
+}
+function markInstalled() {
+  try { localStorage.setItem(LS_INSTALLED, '1'); } catch (err) { /* private mode; in-memory only */ }
+  deferredPrompt = null;
+  updateInstallButton();
+}
 function isStandalone() {
   return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
     window.navigator.standalone === true;
@@ -534,7 +545,7 @@ function isStandalone() {
 function updateInstallButton() {
   var row = $('installRow');
   if (!row) return;
-  row.hidden = !(deferredPrompt && !isStandalone());
+  row.hidden = !(deferredPrompt && !isStandalone() && !isInstalled());
 }
 // Shown when the stored install prompt is missing, fails, or resolves
 // without installing — the button alone can never fail silently again.
@@ -544,13 +555,31 @@ function showInstallNotice() {
 }
 window.addEventListener('beforeinstallprompt', function (e) {
   e.preventDefault();
+  if (isInstalled()) return; // installed once — never show the button again
   deferredPrompt = e;
   updateInstallButton();
 });
 window.addEventListener('appinstalled', function () {
-  deferredPrompt = null;
-  updateInstallButton();
+  markInstalled();
 });
+// Chrome can install from its own menu without firing appinstalled in this
+// tab — re-check whenever the page loads or comes back to the foreground.
+// (Needs the webapp entry in related_applications in manifest.json.)
+function checkInstalledApps() {
+  if (!navigator.getInstalledRelatedApps) return;
+  try {
+    navigator.getInstalledRelatedApps().then(function (apps) {
+      if (!apps) return;
+      for (var i = 0; i < apps.length; i++) {
+        if (apps[i] && apps[i].platform === 'webapp') { markInstalled(); return; }
+      }
+    }).catch(function () { /* unsupported; ignore */ });
+  } catch (err) { /* ignore */ }
+}
+document.addEventListener('visibilitychange', function () {
+  if (!document.hidden) checkInstalledApps();
+});
+checkInstalledApps();
 
 /* ---------- service worker (PWA install; silent if unavailable) ---------- */
 if ('serviceWorker' in navigator) {
