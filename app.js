@@ -230,6 +230,14 @@ function minLabel(min) {
   if (min === '—' || min === '' || min == null) return '—';
   return min + ' min';
 }
+// WMATA reports the train length in the prediction's Car field — usually
+// "6" or "8"; "--" (or missing) means WMATA has no car count for that
+// train, so show nothing rather than a wrong number.
+function carLabel(car) {
+  var n = parseInt(car, 10);
+  if (isNaN(n) || n <= 0) return '';
+  return n + (n === 1 ? ' car' : ' cars');
+}
 function fetchPredictions() {
   var st = primaryStation(selectedCode);
   if (!st || !apiKey) return;
@@ -258,7 +266,7 @@ function fetchPredictions() {
       results.forEach(function (r) {
         if (!r || r.__error || !Array.isArray(r.Trains)) return;
         r.Trains.forEach(function (t) {
-          var k = (t.Line || '') + '|' + (t.DestinationName || '') + '|' + (t.Min || '');
+          var k = (t.Line || '') + '|' + (t.DestinationName || '') + '|' + (t.Min || '') + '|' + (t.Car || '');
           if (seen[k]) return;
           seen[k] = true;
           trains.push(t);
@@ -267,9 +275,10 @@ function fetchPredictions() {
       trains.sort(function (a, b) { return minSortValue(a.Min) - minSortValue(b.Min); });
       var html = trains.map(function (t) {
         var L = LINES[t.Line] || { name: t.Line, color: '#888' };
+        var cars = carLabel(t.Car);
         return '<li><span class="pill" title="' + esc(L.name) + ' line" style="background:' + L.color + ';color:' + pillTextColor(L.color) + '">' + esc(t.Line || '') + '</span>' +
           '<span class="tr-dest">' + esc(t.DestinationName || t.Destination || '') + '</span>' +
-          '<span class="tr-min">' + esc(minLabel(t.Min)) + '</span></li>';
+          '<span class="tr-min">' + esc(minLabel(t.Min)) + (cars ? '<span class="tr-cars">' + esc(cars) + '</span>' : '') + '</span></li>';
       }).join('');
       $('trainList').innerHTML = html;
       $('boardMsg').textContent = trains.length ? '' : 'No trains arriving at this station right now.';

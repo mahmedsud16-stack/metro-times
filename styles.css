@@ -178,5 +178,6 @@ ul.trains li:last-child { border-bottom: none; }
 ul.trains li .pill { text-align: center; }
 .tr-dest { font-size: 1.08rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tr-min { font-weight: 700; font-size: 1.35rem; white-space: nowrap; color: #16233f; text-align: right; }
+.tr-cars { display: block; font-size: .8rem; font-weight: 400; color: #5b6678; }
 
 footer { text-align: center; padding: 8px; }
