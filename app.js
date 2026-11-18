@@ -510,10 +510,12 @@ if ('serviceWorker' in navigator) {
 // The station list is the whole app — a transient failure (e.g. a 404 HTML
 // page while a deploy is publishing) must never strand the user on a
 // dead-end screen: check r.ok before parsing, retry once after a short
-// delay, and only then offer a working Retry button.
+// delay (bypassing the HTTP cache on the retry, in case a cached error page
+// is the culprit), and only then offer Retry plus a self-heal Reset button.
 var STATION_RETRY_MS = 1500;
 function loadStations(attempt) {
-  return fetch('stations.json').then(function (r) {
+  var opts = attempt > 0 ? { cache: 'reload' } : {};
+  return fetch('stations.json', opts).then(function (r) {
     if (!r.ok) throw new Error('stations.json HTTP ' + r.status);
     return r.json();
   }).catch(function (err) {
@@ -524,10 +526,34 @@ function loadStations(attempt) {
     throw err;
   });
 }
+// Self-heal for a stuck offline state (v16): unregisters the service worker
+// and deletes every saved offline cache, then reloads fresh from the
+// network. The WMATA key lives in localStorage, which this does NOT touch —
+// the key stays saved.
+function resetAppData() {
+  var done = function () { location.reload(); };
+  function clearCaches() {
+    if ('caches' in window) {
+      return caches.keys().then(function (keys) {
+        return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+      });
+    }
+    return Promise.resolve();
+  }
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function (regs) {
+      return Promise.all(regs.map(function (r) { return r.unregister(); }));
+    }).then(clearCaches).then(done, done);
+  } else {
+    clearCaches().then(done, done);
+  }
+}
 function showBootError() {
-  document.body.innerHTML = '<div style="padding:20px"><p>Could not load the station list — check your connection and try again.</p><p><button id="retryBootBtn" class="primary big" type="button">Retry</button></p></div>';
+  document.body.innerHTML = '<div style="padding:20px"><p>Could not load the station list — check your connection and try again.</p><p><button id="retryBootBtn" class="primary big" type="button">Retry</button></p><p><button id="resetBootBtn" class="secondary big" type="button">Reset app &amp; reload</button></p><p class="muted">Reset clears the saved offline files and reloads fresh. Your WMATA key stays saved.</p></div>';
   var b = document.getElementById('retryBootBtn');
   if (b) b.addEventListener('click', function () { location.reload(); });
+  var r = document.getElementById('resetBootBtn');
+  if (r) r.addEventListener('click', resetAppData);
 }
 loadStations(0).then(function (data) {
   stations = data;

@@ -69,7 +69,7 @@ button {
   border: 1px solid #009CDE;
 }
 button.primary { background: #009CDE; color: #fff; }
-button.primary.big { width: 100%; padding: 14px; font-size: 1.05rem; font-weight: 600; }
+button.big { width: 100%; padding: 14px; font-size: 1.05rem; font-weight: 600; }
 button.secondary { background: #fff; color: #16233f; border-color: #16233f; }
 button.linklike {
   background: none;
