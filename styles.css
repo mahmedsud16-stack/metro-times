@@ -178,6 +178,21 @@ ul.trains li:last-child { border-bottom: none; }
 ul.trains li .pill { text-align: center; }
 .tr-cars { display: flex; align-items: center; gap: 4px; font-weight: 700; font-size: 1.05rem; color: #16233f; white-space: nowrap; }
 .tr-cars svg { flex: none; display: block; }
+
+/* Direction groups (like wmata.com): one section per direction, headed
+   by its destinations. The sections stack — side-by-side columns would
+   squeeze the rows too narrow on a phone. */
+.dir-group { margin-bottom: 6px; }
+.dir-group:last-child { margin-bottom: 0; }
+.dir-head {
+  font-size: 1rem;
+  margin: 14px 0 2px;
+  padding: 8px 10px;
+  background: #f4f1e8;
+  border-radius: 10px;
+  color: #16233f;
+}
+.dir-group:first-child .dir-head { margin-top: 4px; }
 .tr-dest { font-size: 1.08rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tr-min { font-weight: 700; font-size: 1.35rem; white-space: nowrap; color: #16233f; text-align: right; }
 

@@ -224,6 +224,43 @@ function minSortValue(min) {
   var n = parseInt(min, 10);
   return isNaN(n) ? 999 : n;
 }
+function trainRowHTML(t) {
+  var L = LINES[t.Line] || { name: t.Line, color: '#888' };
+  var cars = carLabel(t.Car);
+  return '<li><span class="tr-cars"' + (cars ? ' title="' + esc(cars + ' cars') + '"' : '') + '>' + (cars ? TRAIN_ICON + '<b>' + esc(cars) + '</b>' : '') + '</span>' +
+    '<span class="pill" title="' + esc(L.name) + ' line" style="background:' + L.color + ';color:' + pillTextColor(L.color) + '">' + esc(t.Line || '') + '</span>' +
+    '<span class="tr-dest">' + esc(t.DestinationName || t.Destination || '') + '</span>' +
+    '<span class="tr-min">' + esc(minLabel(t.Min)) + '</span></li>';
+}
+// Group trains by WMATA direction (the prediction's Group field: "1"/"2"),
+// like wmata.com: each direction gets its own section, headed by the
+// destinations in that direction. Trains without a Group fall back to
+// grouping by destination, so they never vanish. Direction groups come
+// first, in WMATA order (1 then 2); trains inside a group stay sorted
+// by minutes (the caller sorts first).
+function groupTrainsHTML(trains) {
+  var groups = [];
+  var byGroup = {};
+  trains.forEach(function (t) {
+    var key = t.Group ? 'g' + t.Group : 'd' + (t.DestinationName || t.Destination || '');
+    var g = byGroup[key];
+    if (!g) { g = { key: key, order: groups.length, trains: [], dests: [] }; byGroup[key] = g; groups.push(g); }
+    g.trains.push(t);
+    var d = t.DestinationName || t.Destination || '';
+    if (d && g.dests.indexOf(d) === -1) g.dests.push(d);
+  });
+  groups.sort(function (a, b) {
+    var ag = a.key.charAt(0) === 'g', bg = b.key.charAt(0) === 'g';
+    if (ag && bg) return a.key < b.key ? -1 : (a.key > b.key ? 1 : 0);
+    if (ag) return -1;
+    if (bg) return 1;
+    return a.order - b.order;
+  });
+  return groups.map(function (g) {
+    return '<div class="dir-group"><h3 class="dir-head">' + esc(g.dests.join(', ') || 'Trains') + '</h3><ul class="trains">' +
+      g.trains.map(trainRowHTML).join('') + '</ul></div>';
+  }).join('');
+}
 function minLabel(min) {
   if (min === 'ARR') return 'ARR';
   if (min === 'BRD') return 'BRD';
@@ -275,15 +312,7 @@ function fetchPredictions() {
         });
       });
       trains.sort(function (a, b) { return minSortValue(a.Min) - minSortValue(b.Min); });
-      var html = trains.map(function (t) {
-        var L = LINES[t.Line] || { name: t.Line, color: '#888' };
-        var cars = carLabel(t.Car);
-        return '<li><span class="tr-cars"' + (cars ? ' title="' + esc(cars + ' cars') + '"' : '') + '>' + (cars ? TRAIN_ICON + '<b>' + esc(cars) + '</b>' : '') + '</span>' +
-          '<span class="pill" title="' + esc(L.name) + ' line" style="background:' + L.color + ';color:' + pillTextColor(L.color) + '">' + esc(t.Line || '') + '</span>' +
-          '<span class="tr-dest">' + esc(t.DestinationName || t.Destination || '') + '</span>' +
-          '<span class="tr-min">' + esc(minLabel(t.Min)) + '</span></li>';
-      }).join('');
-      $('trainList').innerHTML = html;
+      $('trainList').innerHTML = groupTrainsHTML(trains);
       $('boardMsg').textContent = trains.length ? '' : 'No trains arriving at this station right now.';
       $('boardUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' — refreshes automatically every 30 seconds.';
     })
