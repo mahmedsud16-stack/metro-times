@@ -460,30 +460,6 @@ function bindEvents() {
   $('locateBtn').addEventListener('click', onLocate);
   $('cancelLocateBtn').addEventListener('click', onLocateCancel);
   $('refreshBtn').addEventListener('click', fetchPredictions);
-  $('installBtn').addEventListener('click', function () {
-    var p = deferredPrompt;
-    deferredPrompt = null;
-    installAttempted = true; // this tap ends the button for this page load
-    updateInstallButton(); // hide immediately — a dead button can never be tapped twice
-    if (!p) { showInstallNotice(); return; }
-    try {
-      var r = p.prompt();
-      if (r && r.catch) r.catch(function () { showInstallNotice(); });
-    } catch (err) {
-      showInstallNotice();
-      return;
-    }
-    if (p.userChoice && p.userChoice.then) {
-      p.userChoice.then(function (choice) {
-        if (choice && choice.outcome === 'accepted') markInstalled(); // installed — hide the button for good
-        else showInstallNotice();
-      }, function () { showInstallNotice(); });
-    }
-  });
-  $('installNoticeClose').addEventListener('click', function () {
-    var n = $('installNotice');
-    if (n) n.hidden = true;
-  });
   $('clearAnchorBtn').addEventListener('click', function () {
     anchorCode = null; saveAnchor(); renderAnchorLine(); renderStations();
   });
@@ -522,74 +498,6 @@ function bindEvents() {
   $('favList').addEventListener('click', listClick);
   $('stationList').addEventListener('click', listClick);
 }
-
-/* ---------- in-app install prompt ---------- */
-// The "Install app" button only appears when Chrome actually offers the
-// install prompt (beforeinstallprompt) AND the app has never been installed
-// before. Once installed — by the button, by Chrome's own menu, or by an
-// earlier visit — the button stays hidden for good, so there is never a
-// dead button and never a button staring at an installed user.
-var deferredPrompt = null;
-var LS_INSTALLED = 'metro-installed';
-// In-memory ONLY, on purpose: a tap that fails or is dismissed hides the
-// button for the rest of this page load (Chrome re-fires beforeinstallprompt
-// after a dismissal, which used to bring the button back next to the
-// fallback notice). It is deliberately NOT persisted — a stored flag bricked
-// the button across an uninstall and reinstall, because uninstalling the
-// app does not clear the origin's localStorage.
-var installAttempted = false;
-function isInstalled() {
-  try { return localStorage.getItem(LS_INSTALLED) === '1'; } catch (err) { return false; }
-}
-function markInstalled() {
-  try { localStorage.setItem(LS_INSTALLED, '1'); } catch (err) { /* private mode; in-memory only */ }
-  deferredPrompt = null;
-  updateInstallButton();
-}
-function isStandalone() {
-  return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
-    window.navigator.standalone === true;
-}
-function updateInstallButton() {
-  var row = $('installRow');
-  if (!row) return;
-  row.hidden = !(deferredPrompt && !isStandalone() && !isInstalled() && !installAttempted);
-}
-// Shown when the stored install prompt is missing, fails, or resolves
-// without installing — the button alone can never fail silently again.
-function showInstallNotice() {
-  var n = $('installNotice');
-  if (n) n.hidden = false;
-}
-window.addEventListener('beforeinstallprompt', function (e) {
-  e.preventDefault();
-  if (isInstalled() || installAttempted) return; // dealt with already — never show the button again
-  deferredPrompt = e;
-  updateInstallButton();
-});
-window.addEventListener('appinstalled', function () {
-  markInstalled();
-});
-// Chrome can install from its own menu without firing appinstalled in this
-// tab — re-check whenever the page loads or comes back to the foreground.
-// (Needs the webapp entry in related_applications in manifest.json.)
-function checkInstalledApps() {
-  if (!navigator.getInstalledRelatedApps) return;
-  try {
-    navigator.getInstalledRelatedApps().then(function (apps) {
-      if (!apps) return;
-      for (var i = 0; i < apps.length; i++) {
-        if (apps[i] && apps[i].platform === 'webapp') { markInstalled(); return; }
-      }
-    }).catch(function () { /* unsupported; ignore */ });
-  } catch (err) { /* ignore */ }
-}
-document.addEventListener('visibilitychange', function () {
-  if (!document.hidden) checkInstalledApps();
-});
-window.addEventListener('focus', checkInstalledApps);
-window.addEventListener('pageshow', checkInstalledApps);
-checkInstalledApps();
 
 /* ---------- service worker (PWA install; silent if unavailable) ---------- */
 if ('serviceWorker' in navigator) {
