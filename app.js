@@ -463,6 +463,7 @@ function bindEvents() {
   $('installBtn').addEventListener('click', function () {
     var p = deferredPrompt;
     deferredPrompt = null;
+    markInstallDismissed(); // any tap ends the button — see markInstallDismissed
     updateInstallButton(); // hide immediately — a dead button can never be tapped twice
     if (!p) { showInstallNotice(); return; }
     try {
@@ -530,13 +531,24 @@ function bindEvents() {
 // dead button and never a button staring at an installed user.
 var deferredPrompt = null;
 var LS_INSTALLED = 'metro-installed';
+var LS_DISMISSED = 'metro-install-dismissed';
 function isInstalled() {
   try { return localStorage.getItem(LS_INSTALLED) === '1'; } catch (err) { return false; }
+}
+function isInstallDismissed() {
+  try { return localStorage.getItem(LS_DISMISSED) === '1'; } catch (err) { return false; }
 }
 function markInstalled() {
   try { localStorage.setItem(LS_INSTALLED, '1'); } catch (err) { /* private mode; in-memory only */ }
   deferredPrompt = null;
   updateInstallButton();
+}
+// Any tap on the button ends the button's life: accepted installs it,
+// a dismissal or a failed prompt means Chrome's sheet will not install
+// from here — the notice already points at the ⋮ menu instead, so the
+// button must not come back and stare at the user again.
+function markInstallDismissed() {
+  try { localStorage.setItem(LS_DISMISSED, '1'); } catch (err) { /* private mode; in-memory only */ }
 }
 function isStandalone() {
   return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
@@ -545,7 +557,7 @@ function isStandalone() {
 function updateInstallButton() {
   var row = $('installRow');
   if (!row) return;
-  row.hidden = !(deferredPrompt && !isStandalone() && !isInstalled());
+  row.hidden = !(deferredPrompt && !isStandalone() && !isInstalled() && !isInstallDismissed());
 }
 // Shown when the stored install prompt is missing, fails, or resolves
 // without installing — the button alone can never fail silently again.
@@ -555,7 +567,7 @@ function showInstallNotice() {
 }
 window.addEventListener('beforeinstallprompt', function (e) {
   e.preventDefault();
-  if (isInstalled()) return; // installed once — never show the button again
+  if (isInstalled() || isInstallDismissed()) return; // dealt with already — never show the button again
   deferredPrompt = e;
   updateInstallButton();
 });
