@@ -587,6 +587,8 @@ function checkInstalledApps() {
 document.addEventListener('visibilitychange', function () {
   if (!document.hidden) checkInstalledApps();
 });
+window.addEventListener('focus', checkInstalledApps);
+window.addEventListener('pageshow', checkInstalledApps);
 checkInstalledApps();
 
 /* ---------- service worker (PWA install; silent if unavailable) ---------- */
