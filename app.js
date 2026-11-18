@@ -238,26 +238,49 @@ function trainRowHTML(t) {
 // grouping by destination, so they never vanish. Direction groups come
 // first, in WMATA order (1 then 2); trains inside a group stay sorted
 // by minutes (the caller sorts first).
-function groupTrainsHTML(trains) {
+// Direction of a train relative to the selected station, from line
+// geography (LINE_ORDER): -1 = toward the line's first terminus,
+// +1 = toward the last terminus, 0 = terminating at this station.
+// This reproduces wmata.com's direction grouping at every station —
+// including termini like Ashburn, where the API's Group field does not
+// reliably split arrivals from departures. Returns null when the
+// direction cannot be worked out (caller falls back to Group, then
+// to grouping by destination).
+function trainDirection(t, station) {
+  var order = LINES[t.Line] ? LINE_ORDER[t.Line] : null;
+  var destCode = t.DestinationCode;
+  if (!order || !destCode || !station) return null;
+  var stationCode = null;
+  for (var i = 0; i < station.codes.length; i++) {
+    if (order.indexOf(station.codes[i]) !== -1) { stationCode = station.codes[i]; break; }
+  }
+  if (!stationCode) return null;
+  var si = order.indexOf(stationCode), di = order.indexOf(destCode);
+  if (di === -1) return null;
+  if (di === si) return 0;
+  return di < si ? -1 : 1;
+}
+function groupTrainsHTML(trains, station) {
   var groups = [];
-  var byGroup = {};
+  var byKey = {};
   trains.forEach(function (t) {
-    var key = t.Group ? 'g' + t.Group : 'd' + (t.DestinationName || t.Destination || '');
-    var g = byGroup[key];
-    if (!g) { g = { key: key, order: groups.length, trains: [], dests: [] }; byGroup[key] = g; groups.push(g); }
+    var dir = trainDirection(t, station);
+    var key, sort;
+    if (dir !== null) { key = 'd' + dir; sort = dir === -1 ? 0 : (dir === 1 ? 1 : 2); }
+    else if (t.Group) { key = 'g' + t.Group; sort = 3 + parseInt(t.Group, 10); }
+    else { key = 'x' + (t.DestinationName || t.Destination || ''); sort = 10; }
+    var g = byKey[key];
+    if (!g) { g = { key: key, sort: sort, order: groups.length, trains: [], dests: [], terminating: dir === 0 }; byKey[key] = g; groups.push(g); }
     g.trains.push(t);
     var d = t.DestinationName || t.Destination || '';
     if (d && g.dests.indexOf(d) === -1) g.dests.push(d);
   });
-  groups.sort(function (a, b) {
-    var ag = a.key.charAt(0) === 'g', bg = b.key.charAt(0) === 'g';
-    if (ag && bg) return a.key < b.key ? -1 : (a.key > b.key ? 1 : 0);
-    if (ag) return -1;
-    if (bg) return 1;
-    return a.order - b.order;
-  });
+  // Leaving groups first (one direction, then the other), terminating
+  // trains last — the order wmata.com shows at a terminus.
+  groups.sort(function (a, b) { return (a.sort - b.sort) || (a.order - b.order); });
   return groups.map(function (g) {
-    return '<div class="dir-group"><h3 class="dir-head">' + esc(g.dests.join(', ') || 'Trains') + '</h3><ul class="trains">' +
+    var head = (g.terminating && station) ? 'Arriving at ' + station.name : (g.dests.join(', ') || 'Trains');
+    return '<div class="dir-group"><h3 class="dir-head">' + esc(head) + '</h3><ul class="trains">' +
       g.trains.map(trainRowHTML).join('') + '</ul></div>';
   }).join('');
 }
@@ -312,7 +335,7 @@ function fetchPredictions() {
         });
       });
       trains.sort(function (a, b) { return minSortValue(a.Min) - minSortValue(b.Min); });
-      $('trainList').innerHTML = groupTrainsHTML(trains);
+      $('trainList').innerHTML = groupTrainsHTML(trains, st);
       $('boardMsg').textContent = trains.length ? '' : 'No trains arriving at this station right now.';
       $('boardUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' — refreshes automatically every 30 seconds.';
     })
