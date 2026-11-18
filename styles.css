@@ -168,7 +168,7 @@ ul.stations li.selected { background: #e8f3fb; }
 .board-head h2 { font-size: 1.35rem; margin: 0; }
 ul.trains li {
   display: grid;
-  grid-template-columns: 56px minmax(0, 1fr) auto;
+  grid-template-columns: 46px 56px minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
   padding: 12px 4px;
@@ -176,8 +176,9 @@ ul.trains li {
 }
 ul.trains li:last-child { border-bottom: none; }
 ul.trains li .pill { text-align: center; }
+.tr-cars { display: flex; align-items: center; gap: 4px; font-weight: 700; font-size: 1.05rem; color: #16233f; white-space: nowrap; }
+.tr-cars svg { flex: none; display: block; }
 .tr-dest { font-size: 1.08rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tr-min { font-weight: 700; font-size: 1.35rem; white-space: nowrap; color: #16233f; text-align: right; }
-.tr-cars { display: block; font-size: .8rem; font-weight: 400; color: #5b6678; }
 
 footer { text-align: center; padding: 8px; }
