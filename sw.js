@@ -4,7 +4,7 @@
    strand the app — the network wins whenever it answers, and the saved copy
    is only the offline fallback. (v15 and earlier were cache-first, which let
    a bad saved copy brick the station list until the cache was cleared.) */
-var CACHE = 'metro-pwa-v17';
+var CACHE = 'metro-pwa-v18';
 var SHELL = [
   './',
   './index.html',

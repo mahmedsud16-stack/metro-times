@@ -281,8 +281,9 @@ function groupTrainsHTML(trains, station) {
     else if (t.Group) { key = 'g' + t.Group; sort = 3 + parseInt(t.Group, 10); }
     else { key = 'x' + (t.DestinationName || t.Destination || ''); sort = 10; }
     var g = byKey[key];
-    if (!g) { g = { key: key, sort: sort, order: groups.length, trains: [], dests: [], terminating: dir === 0 }; byKey[key] = g; groups.push(g); }
+    if (!g) { g = { key: key, sort: sort, order: groups.length, trains: [], dests: [], terminating: dir === 0, estimated: true }; byKey[key] = g; groups.push(g); }
     g.trains.push(t);
+    if (!t.__estimated) g.estimated = false;
     var d = t.DestinationName || t.Destination || '';
     if (d && g.dests.indexOf(d) === -1) g.dests.push(d);
   });
@@ -290,7 +291,7 @@ function groupTrainsHTML(trains, station) {
   // trains last — the order wmata.com shows at a terminus.
   groups.sort(function (a, b) { return (a.sort - b.sort) || (a.order - b.order); });
   return groups.map(function (g) {
-    var head = (g.terminating && station) ? 'Arriving at ' + station.name : (g.dests.join(', ') || 'Trains');
+    var head = (g.terminating && station) ? 'Arriving at ' + station.name + (g.estimated ? ' (estimated)' : '') : (g.dests.join(', ') || 'Trains');
     return '<div class="dir-group"><h3 class="dir-head">' + esc(head) + '</h3><ul class="trains">' +
       g.trains.map(trainRowHTML).join('') + '</ul></div>';
   }).join('');
@@ -316,6 +317,43 @@ function carLabel(car) {
 function isUsableTrain(t) {
   return !!t && t.Min !== '---' && t.Line !== 'No';
 }
+// Terminus arrivals (v18): WMATA's public API never returns trains that
+// terminate at the queried station — at every terminus (verified Ashburn,
+// Glenmont, Vienna, 2026-11-18) it returns departures only, while
+// wmata.com shows the arrivals from its internal data. So for a terminus
+// we also read the previous station's board and derive the arrivals: a
+// train there whose destination is this terminus reaches it ~offsetMin
+// minutes after its time at the previous station (verified live
+// 2026-11-18: N11 BRD/12/22 -> Ashburn 3/16/26 on wmata.com, i.e.
+// +3-4 min; offset errs early, the safe side for catching a train).
+// Derived times are estimates, so the group header says so. Only termini
+// with a verified offset belong here — do not guess one.
+var TERMINUS_ARRIVALS = {
+  N12: { prev: 'N11', offsetMin: 3 } // Ashburn <- Loudoun Gateway (Silver)
+};
+function terminusArrivalConfig(st) {
+  if (!st) return null;
+  for (var i = 0; i < st.codes.length; i++) {
+    if (TERMINUS_ARRIVALS[st.codes[i]]) return TERMINUS_ARRIVALS[st.codes[i]];
+  }
+  return null;
+}
+function derivedArrivalTrains(prevTrains, st, cfg) {
+  var out = [];
+  prevTrains.forEach(function (t) {
+    if (!t || t.DestinationCode !== st.code) return;
+    if (!isUsableTrain(t)) return;
+    var derived;
+    if (t.Min === 'BRD' || t.Min === 'ARR') derived = String(cfg.offsetMin);
+    else {
+      var n = parseInt(t.Min, 10);
+      if (isNaN(n)) return;
+      derived = String(n + cfg.offsetMin);
+    }
+    out.push({ Line: t.Line, DestinationCode: st.code, DestinationName: st.name, Destination: st.name, Min: derived, Car: t.Car, Group: '', __estimated: true });
+  });
+  return out;
+}
 function fetchPredictions() {
   var st = primaryStation(selectedCode);
   if (!st || !apiKey) return;
@@ -323,42 +361,60 @@ function fetchPredictions() {
   $('boardLines').innerHTML = linePills(st.lines);
   $('boardMsg').textContent = 'Loading times…';
   $('trainList').innerHTML = '';
-  var urls = st.codes.map(function (c) {
-    return fetch('https://api.wmata.com/StationPrediction.svc/json/GetPrediction/' + c, {
+  function fetchStation(code) {
+    return fetch('https://api.wmata.com/StationPrediction.svc/json/GetPrediction/' + code, {
       headers: { 'api_key': apiKey }
     }).then(function (r) {
       if (r.status === 401) { var e = new Error('bad-key'); e.status = 401; throw e; }
       if (!r.ok) { var e2 = new Error('http-' + r.status); e2.status = r.status; throw e2; }
       return r.json();
     });
-  });
-  Promise.all(urls.map(function (p) { return p.catch(function (e) { return { __error: e }; }); }))
-    .then(function (results) {
-      var badKey = results.some(function (r) { return r && r.__error && r.__error.status === 401; });
-      if (badKey) {
-        $('boardMsg').textContent = 'The key is invalid or expired — check your WMATA key and enter it again.';
-        return;
-      }
-      var trains = [];
-      var seen = {};
-      results.forEach(function (r) {
-        if (!r || r.__error || !Array.isArray(r.Trains)) return;
-        r.Trains.forEach(function (t) {
-          if (!isUsableTrain(t)) return;
+  }
+  function caught(p) { return p.catch(function (e) { return { __error: e }; }); }
+  var termCfg = terminusArrivalConfig(st);
+  var mainP = Promise.all(st.codes.map(function (c) { return caught(fetchStation(c)); }));
+  var arrP = termCfg ? caught(fetchStation(termCfg.prev)) : Promise.resolve(null);
+  Promise.all([mainP, arrP]).then(function (pair) {
+    var results = pair[0], arrRes = pair[1];
+    var badKey = results.some(function (r) { return r && r.__error && r.__error.status === 401; }) ||
+      (arrRes && arrRes.__error && arrRes.__error.status === 401);
+    if (badKey) {
+      $('boardMsg').textContent = 'The key is invalid or expired — check your WMATA key and enter it again.';
+      return;
+    }
+    var trains = [];
+    var seen = {};
+    results.forEach(function (r) {
+      if (!r || r.__error || !Array.isArray(r.Trains)) return;
+      r.Trains.forEach(function (t) {
+        if (!isUsableTrain(t)) return;
+        var k = (t.Line || '') + '|' + (t.DestinationName || '') + '|' + (t.Min || '') + '|' + (t.Car || '');
+        if (seen[k]) return;
+        seen[k] = true;
+        trains.push(t);
+      });
+    });
+    // Terminus arrivals, derived from the previous station (see above).
+    // If the API ever starts returning real terminating trains, those win
+    // and the derived ones are skipped entirely.
+    if (termCfg && arrRes && !arrRes.__error && Array.isArray(arrRes.Trains)) {
+      var hasRealArrivals = trains.some(function (t) { return t.DestinationCode === st.code; });
+      if (!hasRealArrivals) {
+        derivedArrivalTrains(arrRes.Trains, st, termCfg).forEach(function (t) {
           var k = (t.Line || '') + '|' + (t.DestinationName || '') + '|' + (t.Min || '') + '|' + (t.Car || '');
           if (seen[k]) return;
           seen[k] = true;
           trains.push(t);
         });
-      });
-      trains.sort(function (a, b) { return minSortValue(a.Min) - minSortValue(b.Min); });
-      $('trainList').innerHTML = groupTrainsHTML(trains, st);
-      $('boardMsg').textContent = trains.length ? '' : 'No trains arriving at this station right now.';
-      $('boardUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' — refreshes automatically every 30 seconds.';
-    })
-    .catch(function () {
-      $('boardMsg').textContent = 'Could not reach WMATA — check your connection and try again.';
-    });
+      }
+    }
+    trains.sort(function (a, b) { return minSortValue(a.Min) - minSortValue(b.Min); });
+    $('trainList').innerHTML = groupTrainsHTML(trains, st);
+    $('boardMsg').textContent = trains.length ? '' : 'No trains arriving at this station right now.';
+    $('boardUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' — refreshes automatically every 30 seconds.';
+  }).catch(function () {
+    $('boardMsg').textContent = 'Could not reach WMATA — check your connection and try again.';
+  });
 }
 function startAutoRefresh() {
   if (refreshTimer) clearInterval(refreshTimer);
