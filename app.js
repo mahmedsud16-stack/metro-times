@@ -245,7 +245,11 @@ function trainRowHTML(t) {
 // including termini like Ashburn, where the API's Group field does not
 // reliably split arrivals from departures. Returns null when the
 // direction cannot be worked out (caller falls back to Group, then
-// to grouping by destination).
+// to grouping by destination). One exception: a destination that is not
+// on this line at all (WMATA signs some departures with another line's
+// terminus — Silver trains from Ashburn for New Carrollton, D13) is
+// still a departure when the station is a terminus of the train's line,
+// because there is only one way out.
 function trainDirection(t, station) {
   var order = LINES[t.Line] ? LINE_ORDER[t.Line] : null;
   var destCode = t.DestinationCode;
@@ -256,7 +260,14 @@ function trainDirection(t, station) {
   }
   if (!stationCode) return null;
   var si = order.indexOf(stationCode), di = order.indexOf(destCode);
-  if (di === -1) return null;
+  if (di === -1) {
+    // Destination is not on this line. At a terminus a non-terminating
+    // train must be leaving: first station in the order -> +1 (toward
+    // the last terminus), last station -> -1. Anywhere else, unknown.
+    if (si === 0) return 1;
+    if (si === order.length - 1) return -1;
+    return null;
+  }
   if (di === si) return 0;
   return di < si ? -1 : 1;
 }
@@ -300,6 +311,11 @@ function carLabel(car) {
   if (isNaN(n) || n <= 0) return '';
   return String(n);
 }
+// WMATA sometimes lists non-passenger moves (Line "No", Min "---") —
+// they carry no riders, so they never reach the board.
+function isUsableTrain(t) {
+  return !!t && t.Min !== '---' && t.Line !== 'No';
+}
 function fetchPredictions() {
   var st = primaryStation(selectedCode);
   if (!st || !apiKey) return;
@@ -328,6 +344,7 @@ function fetchPredictions() {
       results.forEach(function (r) {
         if (!r || r.__error || !Array.isArray(r.Trains)) return;
         r.Trains.forEach(function (t) {
+          if (!isUsableTrain(t)) return;
           var k = (t.Line || '') + '|' + (t.DestinationName || '') + '|' + (t.Min || '') + '|' + (t.Car || '');
           if (seen[k]) return;
           seen[k] = true;

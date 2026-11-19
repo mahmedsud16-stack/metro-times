@@ -1,10 +1,10 @@
 /* Metro PWA service worker — app shell only.
    WMATA API calls (api.wmata.com) are NEVER cached: predictions always come fresh from the network.
-   Shell files are NETWORK-FIRST (v16): a stale or bad saved copy can never
+   Shell files are NETWORK-FIRST (v16+): a stale or bad saved copy can never
    strand the app — the network wins whenever it answers, and the saved copy
    is only the offline fallback. (v15 and earlier were cache-first, which let
    a bad saved copy brick the station list until the cache was cleared.) */
-var CACHE = 'metro-pwa-v16';
+var CACHE = 'metro-pwa-v17';
 var SHELL = [
   './',
   './index.html',
